@@ -1,6 +1,3 @@
-# VSCode settings/config files
-*.vscode
-
 .DS_Store
 node_modules
 /dist
