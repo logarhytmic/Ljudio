@@ -12,14 +12,12 @@ export default {
 
 <style scoped>
     .header {
+        position: fixed;
+        top: 0px;
+        width: 100%;
         background: #333;
         color: #fff;
         text-align: center;
         padding: 20px;
-    }
-
-    .header a {
-        color: #fff;
-        padding-right: 5px;
     }
 </style>
