@@ -3,6 +3,8 @@ node_modules
 /dist
 jspm_packages/
 
+youtube-rest-endpoints.js
+
 # local env files
 .env.local
 .env..local
