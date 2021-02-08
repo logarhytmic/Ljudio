@@ -4,6 +4,7 @@ node_modules
 jspm_packages/
 
 index.js
+/Backend/server/index.js
 
 # local env files
 .env.local
