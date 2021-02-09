@@ -15,7 +15,7 @@ export default {
         position: fixed;
         top: 0px;
         width: 100%;
-        background: #333;
+        background: #231123;
         color: #fff;
         text-align: center;
         padding: 20px;
