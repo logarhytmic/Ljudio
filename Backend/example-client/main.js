@@ -1,13 +1,13 @@
 async function search(){
   let str = document.querySelector('#search').value
-  let response = await fetch('http://localhost:3000/api/yt/search/' + str)
+  let response = await fetch('http://localhost:5000/api/yt/search/' + str)
   let data = await response.json()
   document.querySelector('textarea').value = JSON.stringify(data, undefined, 4)
 }
 
 async function searchSongs(){
   let str = document.querySelector('#search-songs').value
-  let response = await fetch('http://localhost:3000/api/yt/songs/' + str)
+  let response = await fetch('http://localhost:5000/api/yt/songs/' + str)
   let data = await response.json()
   document.querySelector('textarea').value = JSON.stringify(data, undefined, 4)
 }
