@@ -1,13 +1,29 @@
 <template>
+    <div id="app">
+        <Header />
+    </div>
 </template>
 
 <script>
-// import UserAuth from "./components/UserAuth.vue";
+import Header from './components/Header.vue'
 
 export default {
-  name: "App",
-  components: {
-    // UserAuth,
-  },
-};
+    name: 'App',
+    components: {
+        Header
+    },
+}
 </script>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.4;
+    }
+</style>
