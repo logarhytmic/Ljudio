@@ -4,10 +4,10 @@
       <LoginModal />
     </span>
     <span class="components-auth">
-      <RegisterModal />
+      <Logout />
     </span>
     <span class="components-auth">
-    <button @click.prevent="Logout()">Logout</button>
+      <RegisterModal />
     </span>
   </div>
 </template>
@@ -15,11 +15,14 @@
 <script>
 import LoginModal from "./Login.vue";
 import RegisterModal from "./Register.vue";
+import Logout from "./Logout.vue";
 
 export default {
+  name: "UserAuth",
   components: {
     LoginModal,
     RegisterModal,
+    Logout,
   },
   data() {
     return {};
@@ -53,8 +56,16 @@ export default {
 </script>
 
 <style scoped>
-.components-auth {
-  margin: 2px;
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
+#container-auth {
+  display: flex;
+  justify-content: flex-end;
+  /* margin: 10px; */
 }
 
+.components-auth {
+  display: flex;
+  padding: 0;
+}
 </style>
