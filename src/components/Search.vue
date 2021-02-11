@@ -1,5 +1,5 @@
 <template>
-  <div id="container-search">
+  <div id="search">
     <form id="form-search" @submit.prevent="Search()">
       <input
         v-model="searchString"
@@ -11,7 +11,7 @@
       />
       <button id="button-search">Search</button>
     </form>
-    <div id="container-search-result">
+    <div id="search-result">
       <span
         @click="Play(card)"
         class="p-result"
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style scoped>
-#container-search {
+#search {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: auto;
@@ -188,7 +188,7 @@ export default {
   grid-area: fr;
 }
 
-#container-search-result {
+#search-result {
   grid-area: csr;
 }
 

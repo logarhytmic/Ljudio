@@ -3,7 +3,12 @@
     <Header />
   </div>
   <div id="container-main">
+    <div id="container-search">
     <Search />
+    </div>
+    <div id="container-player">
+      <MusicPlayer />
+    </div>
   </div>
   <div id="container-footer">
     <Footer />
@@ -14,6 +19,7 @@
 import Header from "./components/Header.vue";
 import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
+import MusicPlayer from "./components/MusicPlayer.vue";
 
 export default {
   name: "App",
@@ -21,6 +27,7 @@ export default {
     Header,
     Search,
     Footer,
+    MusicPlayer,
   },
 };
 </script>
@@ -62,11 +69,24 @@ body {
 
 #container-main {
   display: grid;
+  grid-template-areas:
+    ". . cs cs cs cs cs cp cp"
+    ". . cs cs cs cs cs cp cp"
+    ". . cs cs cs cs cs cp cp"
+    ". . cs cs cs cs cs cp cp";
   grid-area: m;
 }
 
 #container-footer {
   display: grid;
   grid-area: f;
+}
+
+#container-search {
+  grid-area: cs;
+}
+
+#container-player {
+  grid-area: cp;
 }
 </style>
