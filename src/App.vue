@@ -6,19 +6,21 @@
     <Search />
   </div>
   <div id="container-footer">
-    <p>Hello footer</p>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
 import Search from "./components/Search.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
     Search,
+    Footer,
   },
 };
 </script>
