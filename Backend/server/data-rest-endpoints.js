@@ -109,6 +109,12 @@ module.exports = (app, db) => {
     response.json(result)
   })
 
+    // yt api 404 for any remaining requests on all methods
+    app.all('/api/*', async (req, res) => {
+      res.status(404)
+      res.end()
+    })
+
 
 }
 
