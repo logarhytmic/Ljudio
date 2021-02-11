@@ -5,29 +5,31 @@
     content-class="modal-content"
   >
     <span class="modal__title">Login</span>
-    <div class="modal__content">
-      <label ref="modalLabel" id="modal-p"></label>
-      <input
-        v-model="_data.email"
-        type="text"
-        id="input-email"
-        name="input-email"
-        alt="input-email"
-        placeholder="Email..."
-      />
-      <input
-        v-model="_data.password"
-        type="password"
-        id="input-secret"
-        name="input-secret"
-        alt="input-secret"
-        placeholder="Password..."
-      />
-    </div>
-    <div class="modal__action">
-      <button class="vfm-btn" @click="Login()">confirm</button>
-      <button class="vfm-btn" @click="CloseLoginModal()">cancel</button>
-    </div>
+    <form @submit.prevent="">
+      <div class="modal__content">
+        <label ref="modalLabel" id="modal-p"></label>
+        <input
+          v-model="_data.email"
+          type="text"
+          id="input-email"
+          name="input-email"
+          alt="input-email"
+          placeholder="Email..."
+        />
+        <input
+          v-model="_data.password"
+          type="password"
+          id="input-secret"
+          name="input-secret"
+          alt="input-secret"
+          placeholder="Password..."
+        />
+      </div>
+      <div class="modal__action">
+        <button class="vfm-btn" @click="Login()">confirm</button>
+        <button class="vfm-btn" @click="CloseLoginModal()">cancel</button>
+      </div>
+    </form>
   </vue-final-modal>
   <button class="vfm-btn" @click="showLoginModal = true">Login</button>
 </template>
