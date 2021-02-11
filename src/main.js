@@ -1,8 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import './index.css';
-import store from './store.js';
+import Store from './store.js';
+import VueFinalModal from 'vue-final-modal';
 
 const app = createApp(App);
-app.use(store);
+app.use(Store);
+app.use(VueFinalModal());
 app.mount('#app');
