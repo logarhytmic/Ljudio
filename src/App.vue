@@ -1,29 +1,72 @@
 <template>
-    <div id="app">
-        <Header />
-    </div>
+  <div id="container-header">
+    <Header />
+  </div>
+  <div id="container-main">
+    <Search />
+  </div>
+  <div id="container-footer">
+    <Footer />
+  </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Header from "./components/Header.vue";
+import Search from "./components/Search.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
-    name: 'App',
-    components: {
-        Header
-    },
-}
+  name: "App",
+  components: {
+    Header,
+    Search,
+    Footer,
+  },
+};
 </script>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 1.4;
-    }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+}
+
+#app {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas:
+    "h h h h h h h h h"
+    "m m m m m m m m m"
+    "f f f f f f f f f";
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+#container-header {
+  display: grid;
+  grid-area: h;
+}
+
+#container-main {
+  display: grid;
+  grid-area: m;
+}
+
+#container-footer {
+  display: grid;
+  grid-area: f;
+}
 </style>
