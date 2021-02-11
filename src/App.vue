@@ -4,7 +4,7 @@
   </div>
   <div id="container-main">
     <div id="container-search">
-    <Search />
+      <Search />
     </div>
     <div id="container-player">
       <MusicPlayer />
