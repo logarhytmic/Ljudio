@@ -23,7 +23,10 @@
         <span v-if="card.Type == 'song'"> [{{ card.Duration }}]</span>
         <span
           v-else-if="
-            card.Type == 'albums' || card.Type == 'single' || card.Type == 'ep'
+            (card.Type == 'albums' ||
+              card.Type == 'single' ||
+              card.Type == 'ep') &&
+            /^\d+$/.test(card.Year)
           "
         >
           [{{ card.Year }}]</span
@@ -46,11 +49,34 @@ export default {
     },
   },
   methods: {
+    FormatDuration(ms) {
+      let s = (ms / 1000).toFixed(0);
+      let m = Math.floor(s / 60);
+      let h = "";
+
+      if (m > 59) {
+        h = Math.floor(m / 60);
+        h = h >= 10 ? h : "0" + h;
+        m = m - h * 60;
+        m = m >= 10 ? m : "0" + m;
+      }
+
+      s = Math.floor(s % 60);
+      s = s >= 10 ? s : "0" + s;
+
+      return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
+    },
     async Play(element) {
       // Examples of using the click events element (element refering to the song/album/artist clicked)
       console.log("To get the clicked element: element == ", element);
-      console.log("Example of getting the elements video/browse- Id: element.Id == ", element.Id);
-      console.log("Example of getting the elements Type: element.Type == ", element.Type);
+      console.log(
+        "Example of getting the elements video/browse- Id: element.Id == ",
+        element.Id
+      );
+      console.log(
+        "Example of getting the elements Type: element.Type == ",
+        element.Type
+      );
     },
     async FetchData(url) {
       const res = await fetch(url, {
@@ -68,7 +94,7 @@ export default {
         Type: e.type,
         Originator: e.artist.name,
         Name: e.name,
-        Duration: e.duration,
+        Duration: this.FormatDuration(e.duration),
       };
 
       return song;
@@ -103,7 +129,11 @@ export default {
         } else if (e.type === "artist") {
           // save e as artist object
           results.push(this.getArtistData(e));
-        } else if (e.type === "album" || e.type === "single" || e.type === "ep") {
+        } else if (
+          e.type === "album" ||
+          e.type === "single" ||
+          e.type === "ep"
+        ) {
           // save e as a type of album object
           results.push(this.getAlbumData(e));
         }
@@ -116,15 +146,21 @@ export default {
 
       if (str.trim().length > 0) {
         if (str.startsWith("@albums")) {
-          let data = await this.FetchData("/api/yt/albums/" + str.substring(7).trim());
+          let data = await this.FetchData(
+            "/api/yt/albums/" + str.substring(7).trim()
+          );
 
           this.$store.commit("addResults", await this.iterRawData(data));
         } else if (str.startsWith("@artists")) {
-          let data = await this.FetchData("/api/yt/artists/" + str.substring(8).trim());
+          let data = await this.FetchData(
+            "/api/yt/artists/" + str.substring(8).trim()
+          );
 
           this.$store.commit("addResults", await this.iterRawData(data));
         } else if (str.startsWith("@songs")) {
-          let data = await this.FetchData("/api/yt/songs/" + str.substring(6).trim());
+          let data = await this.FetchData(
+            "/api/yt/songs/" + str.substring(6).trim()
+          );
 
           this.$store.commit("addResults", await this.iterRawData(data));
         } else {
