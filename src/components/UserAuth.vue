@@ -1,7 +1,14 @@
 <template>
   <div id="container-auth">
-    <LoginModal />
-    <RegisterModal />
+    <span class="components-auth">
+      <LoginModal />
+    </span>
+    <span class="components-auth">
+      <RegisterModal />
+    </span>
+    <span class="components-auth">
+    <button @click.prevent="Logout()">Logout</button>
+    </span>
   </div>
 </template>
 
@@ -15,8 +22,7 @@ export default {
     RegisterModal,
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     Logout() {
@@ -47,10 +53,8 @@ export default {
 </script>
 
 <style scoped>
-#container-auth {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
-  justify-content: space-evenly;
+.components-auth {
+  margin: 2px;
 }
+
 </style>
