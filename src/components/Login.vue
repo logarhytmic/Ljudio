@@ -5,14 +5,14 @@
     content-class="modal-content"
   >
     <span class="modal__title"></span>
-    <form @submit.prevent="" novalidate>
+    <form @submit.prevent="">
       <div class="modal__content">
         <label ref="modalLabel" id="modal-p"></label>
         <div class="container-input">
           <div class="user-box">
             <input
               v-model="_data.email"
-              type="text"
+              type="email"
               name="input-email"
               alt="input-email"
               required
@@ -119,6 +119,14 @@ export default {
 label {
   color: white;
 }
+
+/* ==== Validation CSS ==== */
+
+input:required {
+  box-shadow:none;
+}
+
+/* ==== Modal CSS ==== */
 
 :deep(.modal-container) {
   display: flex;
