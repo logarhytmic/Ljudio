@@ -95,7 +95,6 @@ export default {
               this.$refs.modalLabel.innerText = "";
             } else {
               console.log("Unsuccessful:", d);
-              this._data.email = "";
               this._data.password = "";
               this.$refs.modalLabel.innerText = "No such email or password!";
             }
