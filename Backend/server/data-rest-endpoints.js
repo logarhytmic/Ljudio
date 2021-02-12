@@ -144,4 +144,10 @@ module.exports = (app, db) => {
         let result = await db.query("DELETE FROM examples WHERE id = ?", request.params.id)
         response.json(result)
     })
+
+    // yt api 404 for any remaining requests on all methods
+    app.all('/api/*', async (req, res) => {
+        res.status(404)
+        res.end()
+      })
 }
