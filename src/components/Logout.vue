@@ -22,6 +22,7 @@ export default {
               .then((r) => r.json())
               .then((d) => {
                 console.log("Success:", d);
+                this.$store.commit("checkLoggedIn");
               })
               .catch((e) => {
                 console.error("Error:", e);
@@ -92,7 +93,7 @@ export default {
 }
 
 .b12_3d_glitch div:nth-child(2) {
-  color: #FFFFFF;
+  color: #ffffff;
   /* left: -100px; */
   top: 2px;
   /* width: 200px; */
@@ -149,19 +150,19 @@ export default {
     transform: skewX(-20deg);
     -webkit-transform: skewX(-20deg);
     -moz-transform: skewX(-20deg);
-    color: #FFFFFF;
+    color: #ffffff;
   }
   90.00% {
     transform: skewX(0deg);
     -webkit-transform: skewX(0deg);
     -moz-transform: skewX(0deg);
-    color: #FFFFFF;
+    color: #ffffff;
   }
   to {
     transform: skewX(0deg);
     -webkit-transform: skewX(0deg);
     -moz-transform: skewX(0deg);
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
 
