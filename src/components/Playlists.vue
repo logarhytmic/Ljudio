@@ -2,10 +2,10 @@
     <div id="playlists">
         <p>playlists</p>
         <span 
-            v-for="playlist in get_playlist"
+            v-for="playlist in getPlaylist"
             :key="playlist.id"
             class="playlist-item">
-                {{ playlist.title }}
+                <p>{{ playlist.title }}</p>
         </span>
     </div>
 </template>
@@ -25,10 +25,9 @@ export default {
     },
     mounted() {
         this.fetch_playlists("/api/playlists");
-        console.log(this.$store.state.playlists);
     },
     computed: {
-        get_playlist() {
+        getPlaylist() {
             return this.$store.state.playlists;
         }
     },
@@ -40,11 +39,8 @@ export default {
                     "Content-Type": "application/json"
                 },
             });
-            await this.$store.commit("addPlaylists", res.json());
+            this.$store.commit("addPlaylists", await res.json());
         },
-        show_playlists() {
-            let playlist = this.fetch_playlists("/api/playlists");
-        }
     }
 }
 </script>
