@@ -88,6 +88,48 @@ module.exports = (app, db) => {
         }
     })
 
+    // TODO: optimal way of finding the right playlist?
+    // TODO: handle user having no plyalists
+    app.post('/api/current', async (request, response) => {
+        let user;
+        let current_playlist;
+        if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+            let has_playlist = await db.query(
+                'SELECT COUNT(*) FROM playlist WHERE userid = ?',
+                [request.session.user.id]
+            )
+            has_playlist = has_playlist[0]
+            if (has_playlist > 0) {
+                current_playlist = await db.query(
+                    'SELECT * FROM playlist WHERE userid = ?',
+                    [request.session.user.id]
+                );
+                current_playlist = current_playlist[0];
+                let song_res = await db.query(
+                    'INSERT INTO song SET ?',
+                    [request.title, request.originator, request.duration]
+                );
+                let song = song_res[0];
+                let pl_song_res = await db.query(
+                    'INSERT INTO playlist_song SET ?',
+                    [current_playlist.id, song.id]
+                );
+                response.json(current_playlist);
+            } else {
+                response.status(404);
+                response.json({ message: "user has no playlists" });
+            }
+        } else {
+            response.status(401)
+            response.json({ message: "unauthorized" })
+        }
+    })
+
     // Example routes
 
     // public get all table rows
