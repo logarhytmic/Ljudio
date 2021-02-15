@@ -24,7 +24,6 @@ export default {
         grid-template-columns: 50% 50%;
         grid-template-rows: auto;
         justify-content: space-evenly;
-        position: fixed;
         top: 0px;
         width: 100%;
         background: #231123;
