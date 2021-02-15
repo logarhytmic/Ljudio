@@ -10,7 +10,6 @@
     "vue-final-modal": "^1.8.6",
     "vue-github-button": "^3.0.0",
     "vue-router": "^4.0.3",
-    "vue-youtube": "^1.4.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
