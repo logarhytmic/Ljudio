@@ -2,7 +2,7 @@
     <div id="playlists">
         <p>playlists</p>
         <span 
-            v-for="playlist in getPlaylist"
+            v-for="playlist in get_playlist"
             :key="playlist.id"
             class="playlist-item">
                 <p>{{ playlist.title }}</p>
@@ -27,7 +27,7 @@ export default {
         this.fetch_playlists("/api/playlists");
     },
     computed: {
-        getPlaylist() {
+        get_playlist() {
             return this.$store.state.playlists;
         }
     },

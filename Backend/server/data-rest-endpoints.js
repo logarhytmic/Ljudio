@@ -61,7 +61,7 @@ module.exports = (app, db) => {
             );
             user = user[0];
             let result = await db.query(
-                'INSERT INTO playlists SET ?', [request.title, request.session.user.id]
+                'INSERT INTO playlist SET ?', [request.title, request.session.user.id]
             );
             response.json(result);
         }
@@ -78,7 +78,7 @@ module.exports = (app, db) => {
                 [request.session.user.email, request.session.user.password]
             );
             let result = await db.query(
-                'SELECT * FROM playlists WHERE user_id = ?', request.session.user.id
+                'SELECT * FROM playlist WHERE userid = ?', request.session.user.id
             );
             response.json(result);
         }
