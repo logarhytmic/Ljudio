@@ -3,7 +3,12 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
 
+  <!-- Search input and button -->
   <div id="search">
     <form id="form-search" @submit.prevent="Search()">
       <input
@@ -14,29 +19,44 @@
         name="input-search"
         placeholder="search..."
       />
-      <button id="button-search"><em class="fa fa-search"></em></button>
+      <button id="button-search">
+        <em class="fa fa-search"></em>
+      </button>
     </form>
+
+    <!-- Display search result -->
     <div id="search-result">
-      <span
-        @click="Play(card)"
-        class="p-result"
-        v-for="card in searchCards"
-        :key="card.Id"
+      <div v-for="card in searchCards" :key="card.Id" class="search-card">
+        <div @click="Play(card)" class="card-content">
+          <span class="p-result">
+            [{{ card.Type }}] {{ card.Originator }}
+            <span v-if="card.Type != 'artist'"> - {{ card.Name }}</span>
+            <span v-if="card.Type == 'song'"> [{{ card.Duration }}]</span>
+            <span
+              v-else-if="
+                (card.Type == 'albums' ||
+                  card.Type == 'single' ||
+                  card.Type == 'ep') &&
+                /^\d+$/.test(card.Year)
+              "
+            >
+              [{{ card.Year }}]</span
+            >
+          </span>
+        </div>
+        <div class="card-playlist-add">
+          <em @click="addToPlaylist(card)" class="material-icons"
+            >playlist_add</em
+          >
+        </div>
+      </div>
+      <button
+        title="This is just for testing. Click a couple of results then click this and check the console!"
+        @click="getQueue"
+        id="test"
       >
-        [{{ card.Type }}] {{ card.Originator }}
-        <span v-if="card.Type != 'artist'"> - {{ card.Name }}</span>
-        <span v-if="card.Type == 'song'"> [{{ card.Duration }}]</span>
-        <span
-          v-else-if="
-            (card.Type == 'albums' ||
-              card.Type == 'single' ||
-              card.Type == 'ep') &&
-            /^\d+$/.test(card.Year)
-          "
-        >
-          [{{ card.Year }}]</span
-        ><br />
-      </span>
+        Test
+      </button>
     </div>
   </div>
 </template>
@@ -54,6 +74,14 @@ export default {
     },
   },
   methods: {
+    async addToPlaylist(song) {
+      await this.$store.commit("addSongToQueue", song);
+    },
+
+    async getQueue() {
+      console.table(await this.$store.state.queue);
+    },
+
     FormatDuration(ms) {
       let s = (ms / 1000).toFixed(0);
       let m = Math.floor(s / 60);
@@ -72,17 +100,11 @@ export default {
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
     async Play(element) {
-      // Examples of using the click events element (element refering to the song/album/artist clicked)
-      console.log("To get the clicked element: element == ", element);
-      console.log(
-        "Example of getting the elements video/browse- Id: element.Id == ",
-        element.Id
-      );
-      console.log(
-        "Example of getting the elements Type: element.Type == ",
-        element.Type
-      );
+      // Stores the song in the temporary queue, which is stored in the store.js under the queue array
+      this.$store.commit("addSongToQueue", element);
+      // Here you would want to call the playVideoById youtube api function with the elements Id
     },
+
     async FetchData(url) {
       const res = await fetch(url, {
         method: "GET",
@@ -93,6 +115,7 @@ export default {
 
       return await res.json();
     },
+
     getSongData(e) {
       let song = {
         Id: e.videoId,
@@ -104,6 +127,7 @@ export default {
 
       return song;
     },
+
     getAlbumData(e) {
       let song = {
         Id: e.browseId,
@@ -115,6 +139,7 @@ export default {
 
       return song;
     },
+
     getArtistData(e) {
       let song = {
         Id: e.browseId,
@@ -124,6 +149,7 @@ export default {
 
       return song;
     },
+
     async iterRawData(data) {
       let results = [];
 
@@ -146,6 +172,7 @@ export default {
 
       return results;
     },
+
     async Search() {
       let str = this.searchString;
 
@@ -198,17 +225,56 @@ export default {
   grid-area: csr;
   border: 1px solid #231123;
   margin-top: 1vh;
-  padding: 10px;
   color: white;
   min-height: 60vh;
+  text-align: left;
 }
 
-span {
+#search-result > div:nth-child(odd) {
+  background-color: #351735;
+  border-left: 1px solid #231123;
+  border-right: 1px solid #231123;
+}
+
+#search-result > div:nth-child(even) {
+  border-left: 1px solid #351735;
+  border-right: 1px solid #351735;
+}
+
+#search-result > div:nth-child(odd):active {
+  background-color: #231123;
+  border-left: 1px solid #351735;
+  border-right: 1px solid #351735;
+}
+
+#search-result > div:nth-child(even):active {
+  background-color: #351735;
+  border-left: 1px solid #231123;
+  border-right: 1px solid #231123;
+}
+
+.search-card {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 3px;
+  justify-content: space-between;
   cursor: pointer;
 }
 
-span:hover {
+.search-card > .card-content:hover > span {
   color: coral;
+}
+
+.search-card > .card-playlist-add > em {
+  cursor: pointer;
+}
+
+.search-card > .card-playlist-add > em:hover {
+  color: coral;
+}
+
+.search-card > .card-content {
+  width: 100%;
 }
 
 input {
@@ -245,13 +311,13 @@ select:-webkit-autofill:focus {
 
 button {
   box-shadow: none;
-  border: 1px solid #231123;
-  background-color: #231123;
+  border: 1px solid #3b203b;
+  background-color: #3b203b;
   color: white;
   padding: 5px;
   padding-top: 6px;
   padding-left: 10px;
   padding-right: 10px;
+  cursor: pointer;
 }
-
 </style>
