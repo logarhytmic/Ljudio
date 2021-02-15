@@ -10,10 +10,11 @@
     "vue-final-modal": "^1.8.6",
     "vue-github-button": "^3.0.0",
     "vue-router": "^4.0.3",
+    "vue-youtube": "^1.4.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "vite": "^1.0.0-rc.13",
-    "@vue/compiler-sfc": "^3.0.4"
+    "@vue/compiler-sfc": "^3.0.4",
+    "vite": "^1.0.0-rc.13"
   }
 }
