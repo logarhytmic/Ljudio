@@ -1,4 +1,9 @@
 <template>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+
   <div id="search">
     <form id="form-search" @submit.prevent="Search()">
       <input
@@ -9,7 +14,7 @@
         name="input-search"
         placeholder="search..."
       />
-      <button id="button-search">Search</button>
+      <button id="button-search"><em class="fa fa-search"></em></button>
     </form>
     <div id="search-result">
       <span
@@ -182,6 +187,7 @@ export default {
   grid-template-areas:
     "fr fr fr fr fr fr fr fr fr"
     "csr csr csr csr csr csr csr csr csr";
+  padding-top: 10px;
 }
 
 #form-search {
@@ -190,6 +196,11 @@ export default {
 
 #search-result {
   grid-area: csr;
+  border: 1px solid #231123;
+  margin-top: 1vh;
+  padding: 10px;
+  color: white;
+  min-height: 60vh;
 }
 
 span {
@@ -197,6 +208,50 @@ span {
 }
 
 span:hover {
-  color: red;
+  color: coral;
 }
+
+input {
+  background-color: transparent;
+  box-shadow: none;
+  /* border: none; */
+  border: 1px solid #231123;
+  padding: 1px;
+  padding-left: 5px;
+  max-width: 100%;
+  text-align: left;
+  color: white;
+  font-family: "Roboto", "Noto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  outline: 0;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+button {
+  box-shadow: none;
+  border: 1px solid #231123;
+  background-color: #231123;
+  color: white;
+  padding: 5px;
+  padding-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 </style>
