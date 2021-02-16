@@ -94,8 +94,7 @@ export default {
               this._data.password = "";
               this.$refs.modalLabel.innerText = "";
               this.$store.commit('checkLoggedIn')
-              this.$router.push("/container");
-              
+              this.$router.push("/app");
             } else {
               console.log("Unsuccessful:", d);
               this._data.password = "";
