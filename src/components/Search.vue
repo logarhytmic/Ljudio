@@ -52,13 +52,6 @@
           >
         </div>
       </div>
-      <button
-        title="This is just for testing. Click a couple of results then click this and check the console!"
-        @click="getQueue"
-        id="test"
-      >
-        Test
-      </button>
     </div>
   </div>
 </template>
