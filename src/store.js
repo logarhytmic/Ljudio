@@ -18,4 +18,10 @@ const mutations = {
   },
 };
 
+
+//AUTH
+// const actions = {
+//   async 
+// }
+
 export default createStore({ state, getters, mutations });

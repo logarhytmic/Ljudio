@@ -2,14 +2,8 @@
   <div id="container-header">
     <Header />
   </div>
-  <div id="container-main">
-    <div id="container-search">
-      <Search />
-    </div>
-    <div id="container-player">
-      <MusicPlayer />
-    </div>
-  </div>
+
+  <router-view />
   <div id="container-footer">
     <Footer />
   </div>
@@ -17,17 +11,21 @@
 
 <script>
 import Header from "./components/Header.vue";
-import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
+import Search from "./components/Search.vue";
 import MusicPlayer from "./components/MusicPlayer.vue";
+import Container from "./components/Container.vue";
+import Home from "./components/Home.vue";
 
 export default {
   name: "App",
   components: {
     Header,
+    Home,
+    Container,
+    MusicPlayer,
     Search,
     Footer,
-    MusicPlayer,
   },
 };
 </script>

@@ -1,11 +1,12 @@
 <template>
-  <div v-if="!ifLoggedIn" id="container-player">
-    <span class="components-player">
+
+  <div v-if="ifLoggedIn" id="container-main">
+    <div id="container-search">
       <Search />
-    </span>
-    <span class="components-player">
+    </div>
+    <div id="container-player">
       <MusicPlayer />
-    </span>
+    </div>
   </div>
 </template>
 

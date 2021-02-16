@@ -23,6 +23,7 @@ export default {
               .then((d) => {
                 console.log("Success:", d);
                 this.$store.commit("checkLoggedIn");
+                this.$router.push("/");
               })
               .catch((e) => {
                 console.error("Error:", e);
