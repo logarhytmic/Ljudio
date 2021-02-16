@@ -2,14 +2,7 @@
   <div id="container-header">
     <Header />
   </div>
-  <div id="container-main">
-    <div id="container-search">
-      <Search ref="search" v-on:play="onPlay"/>
-    </div>
-    <div id="container-player">
-      <MusicPlayer ref="mPlayer"/>
-    </div>
-  </div>
+  <router-view />
   <div id="container-footer">
     <Footer />
   </div>
@@ -17,24 +10,13 @@
 
 <script>
 import Header from "./components/Header.vue";
-import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
-import MusicPlayer from "./components/MusicPlayer.vue";
-
-//import Controllers from "./components/Controllers.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Search,
     Footer,
-    MusicPlayer,
-  },
-  methods: {
-    onPlay: function (song) {
-      this.$refs.mPlayer.playSong(song);
-    }
   },
 };
 </script>

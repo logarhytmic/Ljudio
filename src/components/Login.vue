@@ -93,6 +93,9 @@ export default {
               this._data.email = "";
               this._data.password = "";
               this.$refs.modalLabel.innerText = "";
+              this.$store.commit('checkLoggedIn')
+              this.$router.push("/container");
+              
             } else {
               console.log("Unsuccessful:", d);
               this._data.password = "";
