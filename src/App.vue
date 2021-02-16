@@ -21,6 +21,8 @@ import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
 import MusicPlayer from "./components/MusicPlayer.vue";
 
+//import Controllers from "./components/Controllers.vue";
+
 export default {
   name: "App",
   components: {
