@@ -88,45 +88,45 @@ module.exports = (app, db) => {
         }
     })
 
-    // TODO: optimal way of finding the right playlist?
-    // TODO: handle user having no plyalists
-    app.post('/api/current', async (request, response) => {
-        let user;
+    app.post('/api/current-playlist/:pl_id&:song', async (request, response) => {
         let current_playlist;
         if (request.session.user) {
-            user = await db.query(
-                'SELECT * FROM users WHERE email = ? AND password = ?',
-                [request.session.user.email, request.session.user.password]
+            current_playlist = await db.query(
+                'SELECT * FROM playlist WHERE id = ?',
+                [request.params.pl_id]
             );
-            user = user[0];
-            let has_playlist = await db.query(
-                'SELECT COUNT(*) FROM playlist WHERE userid = ?',
-                [request.session.user.id]
-            )
-            has_playlist = has_playlist[0]
-            if (has_playlist > 0) {
-                current_playlist = await db.query(
-                    'SELECT * FROM playlist WHERE userid = ?',
-                    [request.session.user.id]
-                );
-                current_playlist = current_playlist[0];
-                let song_res = await db.query(
-                    'INSERT INTO song SET ?',
-                    [request.title, request.originator, request.duration]
-                );
-                let song = song_res[0];
-                let pl_song_res = await db.query(
-                    'INSERT INTO playlist_song SET ?',
-                    [current_playlist.id, song.id]
-                );
-                response.json(current_playlist);
-            } else {
-                response.status(404);
-                response.json({ message: "user has no playlists" });
-            }
+            current_playlist = current_playlist[0];
+            let song_res = await db.query(
+                'INSERT INTO song SET ?',
+                [
+                    request.params.song.title,
+                    request.params.song.originator,
+                    request.params.song.duration
+                ]
+            );
+            let song = song_res[0];
+            let pl_song_res = await db.query(
+                'INSERT INTO playlist_song SET ?',
+                [current_playlist.id, song.id]
+            );
+            response.json([current_playlist, pl_song_res]);
         } else {
             response.status(401)
             response.json({ message: "unauthorized" })
+        }
+    })
+
+    // TODO: synch db and search song ids
+    app.get('/api/current-playlist/:id', async (request, response) => {
+        if (request.session.user) {
+            let songs = await db.query(
+                'SELECT DISTINCT s.* FROM song s INNER JOIN playlist_song p ON s.id = p.song_id WHERE p.playlist_id = ?',
+                [request.params.id]
+            );
+            response.json(songs);
+        } else {
+            response.status(401);
+            response.json({ message: "unauthorized" });
         }
     })
 
