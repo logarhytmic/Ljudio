@@ -40,7 +40,7 @@ export default {
             this.$store.commit("addPlaylists", await res.json());
         },
     }
-}
+};
 </script>
 
 <style scoped>

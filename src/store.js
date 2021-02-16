@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 const state = {
     results: [],
     playlists: [],
+    songs: [],
 }
 
 const mutations = {
@@ -12,8 +13,8 @@ const mutations = {
     addPlaylists(state, playlists) {
         this.state.playlists = playlists;
     },
-    addCurrentPlaylist(state, playlist) {
-        this.state.playlist = playlist;
+    addCurrentPlaylist(state, songs) {
+        this.state.songs = songs;
     }
 }
 

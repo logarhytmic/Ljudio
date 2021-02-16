@@ -22,9 +22,12 @@ export default {
             },
         };
     },
+    mounted() {
+        this.fetch_songs("/api/current-playlist/1");
+    },
     computed: {
         get_songs() {
-            return this.$store.state.playlist;
+            return this.$store.state.songs;
         }
     },
     methods: {
@@ -36,9 +39,9 @@ export default {
                 },
             });
             this.$store.commit("addCurrentPlaylist", await res.json());
-        }
+        },
     }
-}
+};
 </script>
 
 <style scoped>
