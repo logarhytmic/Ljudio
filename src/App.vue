@@ -25,6 +25,8 @@ import Footer from "./components/Footer.vue";
 import MusicPlayer from "./components/MusicPlayer.vue";
 import Playlists from "./components/Playlists.vue";
 
+//import Controllers from "./components/Controllers.vue";
+
 export default {
   name: "App",
   components: {
