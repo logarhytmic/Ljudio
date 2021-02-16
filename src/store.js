@@ -1,13 +1,27 @@
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 
 const state = {
-    results: []
-}
+  results: [],
+  loggedIn: false,
+};
+
+const getters = {
+  isLoggedIn: (state) => state.loggedIn,
+};
 
 const mutations = {
-    addResults(state, results) {
-        this.state.results = results;
-    }
-}
+  addResults(state, results) {
+    this.state.results = results;
+  },
+  checkLoggedIn(state) {
+    this.state.loggedIn = !this.state.loggedIn;
+  },
+};
 
-export default createStore({ state, mutations });
+
+//AUTH
+// const actions = {
+//   async 
+// }
+
+export default createStore({ state, getters, mutations });
