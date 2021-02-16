@@ -3,7 +3,7 @@
     <span v-if="!ifLoggedIn" class="components-auth">
       <LoginModal />
     </span>
-    <span class="components-auth">
+    <span v-if="ifLoggedIn" class="components-auth">
       <Logout />
     </span>
     <span v-if="!ifLoggedIn" class="components-auth">
