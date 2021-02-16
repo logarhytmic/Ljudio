@@ -4,10 +4,10 @@
   </div>
   <div id="container-main">
     <div id="container-search">
-      <Search />
+      <Search ref="search" v-on:play="onPlay"/>
     </div>
     <div id="container-player">
-      <MusicPlayer />
+      <MusicPlayer ref="mPlayer"/>
     </div>
   </div>
   <div id="container-footer">
@@ -30,6 +30,11 @@ export default {
     Search,
     Footer,
     MusicPlayer,
+  },
+  methods: {
+    onPlay: function (song) {
+      this.$refs.mPlayer.playSong(song);
+    }
   },
 };
 </script>
@@ -82,7 +87,7 @@ body {
     ". . cs cs cs cs cs cp cp"
     ". . cs cs cs cs cs cp cp";
   grid-area: m;
-        background: #160b16;
+  background: #160b16;
 }
 
 #container-footer {
