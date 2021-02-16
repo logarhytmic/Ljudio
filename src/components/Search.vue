@@ -27,11 +27,13 @@
     <!-- Display search result -->
     <div id="search-result">
       <div v-for="card in searchCards" :key="card.Id" class="search-card">
-        <div @click="Play(card)" class="card-content">
+        <div @click="onClick(card)" class="card-content">
           <span class="p-result">
             [{{ card.Type }}] {{ card.Originator }}
             <span v-if="card.Type != 'artist'"> - {{ card.Name }}</span>
-            <span v-if="card.Type == 'song'"> [{{ card.Duration }}]</span>
+            <span v-if="card.Type == 'song'">
+              [{{ formatDuration(card.Duration) }}]</span
+            >
             <span
               v-else-if="
                 (card.Type == 'albums' ||
@@ -82,7 +84,7 @@ export default {
       console.table(await this.$store.state.queue);
     },
 
-    FormatDuration(ms) {
+    formatDuration(ms) {
       let s = (ms / 1000).toFixed(0);
       let m = Math.floor(s / 60);
       let h = "";
@@ -99,10 +101,14 @@ export default {
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
-    async Play(element) {
+
+    async onClick(element) {
       // Stores the song in the temporary queue, which is stored in the store.js under the queue array
       this.$store.commit("addSongToQueue", element);
       // Here you would want to call the playVideoById youtube api function with the elements Id
+      if (element.Type === "song") {
+        this.$emit("play", element);
+      }
     },
 
     async FetchData(url) {
@@ -122,7 +128,7 @@ export default {
         Type: e.type,
         Originator: e.artist.name,
         Name: e.name,
-        Duration: this.FormatDuration(e.duration),
+        Duration: e.duration,
       };
 
       return song;
