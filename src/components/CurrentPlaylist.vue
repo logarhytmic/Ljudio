@@ -42,5 +42,8 @@ export default {
 </script>
 
 <style scoped>
-
+    .current-playlist {
+        display: flex;
+        flex-flow: column row;
+    }
 </style>

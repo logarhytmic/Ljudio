@@ -12,6 +12,9 @@
     <div id="container-player">
       <MusicPlayer />
     </div>
+    <div id="continer-current-playlist">
+      <CurrentPlaylist />
+    </div>
   </div>
   <div id="container-footer">
     <Footer />
@@ -24,6 +27,7 @@ import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
 import MusicPlayer from "./components/MusicPlayer.vue";
 import Playlists from "./components/Playlists.vue";
+import CurrentPlaylist from "./components/CurrentPlaylist.vue";
 
 //import Controllers from "./components/Controllers.vue";
 
@@ -35,6 +39,7 @@ export default {
     Footer,
     MusicPlayer,
     Playlists,
+    CurrentPlaylist
   },
 };
 </script>
@@ -79,13 +84,17 @@ body {
   grid-template-areas:
     "pl pl cs cs cs cs cs cp cp"
     "pl pl cs cs cs cs cs cp cp"
-    "pl pl cs cs cs cs cs cp cp"
-    "pl pl cs cs cs cs cs cp cp";
+    "pl pl cs cs cs cs cs cl cl"
+    "pl pl cs cs cs cs cs cl cl";
   grid-area: m;
 }
 
 #container-playlists {
   grid-area: pl;
+}
+
+#container-current-playlist {
+  grid-area: cl;
 }
 
 #container-search {
