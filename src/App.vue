@@ -17,6 +17,8 @@ import MusicPlayer from "./components/MusicPlayer.vue";
 import Container from "./components/Container.vue";
 import Home from "./components/Home.vue";
 
+//import Controllers from "./components/Controllers.vue";
+
 export default {
   name: "App",
   components: {
