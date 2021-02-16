@@ -12,10 +12,8 @@
 
 <script>
 export default {
-    // make a span for playlist items, v-for spans into the div, each span containing one playlist item
     data() {
         return {
-            // TODO add number of songs
             _data: {
                 id: "",
                 title: "",
