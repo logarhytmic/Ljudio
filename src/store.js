@@ -11,6 +11,9 @@ const mutations = {
     },
     addPlaylists(state, playlists) {
         this.state.playlists = playlists;
+    },
+    addCurrentPlaylist(state, playlist) {
+        this.state.playlist = playlist;
     }
 }
 
