@@ -100,7 +100,7 @@ export default {
       this.$store.commit("addSongToQueue", element);
       // Here you would want to call the playVideoById youtube api function with the elements Id
       if (element.Type === "song") {
-        this.$emit("play", element);
+        this.$store.commit("setCurrentSong", element);
       }
     },
 
@@ -180,7 +180,7 @@ export default {
           let data = await this.FetchData(
             "/api/yt/albums/" + str.substring(7).trim()
           );
-
+          
           this.$store.commit("addResults", await this.iterRawData(data));
         } else if (str.startsWith("@artists")) {
           let data = await this.FetchData(
@@ -220,6 +220,7 @@ export default {
   grid-area: fr;
 }
 
+/* HÄR IFRÅN */
 #search-result {
   grid-area: csr;
   border: 1px solid #231123;
@@ -275,6 +276,8 @@ export default {
 .search-card > .card-content {
   width: 100%;
 }
+
+/* TILL HIT */
 
 input {
   background-color: transparent;
