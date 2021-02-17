@@ -88,6 +88,23 @@ module.exports = (app, db) => {
         }
     })
 
+    app.delete('/api/playlists/:id', async (request, response) => {
+        if (request.session.user) {
+            let result = await db.query(
+                'DELETE * FROM playlist WHERE id = ?',
+                [request.params.id]
+            );
+            let pl_song_res = await db.query(
+                'DELETE * FROM playlist_song WHERE playlist_id = ?',
+                [request.params.id]
+            );
+            response.json([result, pl_song_res]);
+        } else {
+            response.status(401);
+            response.json({ message: "unauthorized" });
+        }
+    })
+
     app.post('/api/current-playlist/:pl_id&:song', async (request, response) => {
         let current_playlist;
         if (request.session.user) {
@@ -124,6 +141,23 @@ module.exports = (app, db) => {
                 [request.params.id]
             );
             response.json(songs);
+        } else {
+            response.status(401);
+            response.json({ message: "unauthorized" });
+        }
+    })
+
+    app.delete('/api/current-playlist/:id', async (request, response) =>{
+        if (request.session.user) {
+            let result = await db.query(
+                'DELETE * FROM song WHERE id = ?',
+                [request.params.id]
+            );
+            let pl_song_res = await db.query(
+                'DELETE * FROM song_playlist WHERE song_id = ?',
+                [request.params.id]
+            );
+            response.json([result, pl_song_res]);
         } else {
             response.status(401);
             response.json({ message: "unauthorized" });
