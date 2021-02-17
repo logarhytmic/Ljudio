@@ -93,7 +93,9 @@ export default {
               this._data.email = "";
               this._data.password = "";
               this.$refs.modalLabel.innerText = "";
-              this.$store.commit('checkLoggedIn')
+              localStorage.setItem("loggedIn", "true");
+
+              this.$store.commit("checkLoggedIn");
               this.$router.push("/app");
             } else {
               console.log("Unsuccessful:", d);
@@ -124,7 +126,7 @@ label {
 /* ==== Validation CSS ==== */
 
 input:required {
-  box-shadow:none;
+  box-shadow: none;
 }
 
 /* ==== Modal CSS ==== */
