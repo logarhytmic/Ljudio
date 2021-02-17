@@ -22,6 +22,8 @@ export default {
               .then((r) => r.json())
               .then((d) => {
                 console.log("Success:", d);
+                localStorage.setItem("loggedIn", "false");
+
                 this.$store.commit("checkLoggedIn");
                 this.$router.push("/");
               })

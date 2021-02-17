@@ -1,9 +1,10 @@
 import { createStore } from "vuex";
 
 const state = {
+
   results: [],
   queue: [],
-  loggedIn: false,
+  loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
 }
 
