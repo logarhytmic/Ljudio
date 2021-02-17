@@ -2,14 +2,7 @@
   <div id="container-header">
     <Header />
   </div>
-  <div id="container-main">
-    <div id="container-search">
-      <Search />
-    </div>
-    <div id="container-player">
-      <MusicPlayer />
-    </div>
-  </div>
+  <router-view />
   <div id="container-footer">
     <Footer />
   </div>
@@ -17,17 +10,13 @@
 
 <script>
 import Header from "./components/Header.vue";
-import Search from "./components/Search.vue";
 import Footer from "./components/Footer.vue";
-import MusicPlayer from "./components/MusicPlayer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Search,
     Footer,
-    MusicPlayer,
   },
 };
 </script>
@@ -49,9 +38,15 @@ body {
   width: 100vw;
   height: 100vh;
   grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: auto;
+  grid-template-rows: 10vh auto;
   grid-template-areas:
     "h h h h h h h h h"
+    "m m m m m m m m m"
+    "m m m m m m m m m"
+    "m m m m m m m m m"
+    "m m m m m m m m m"
+    "m m m m m m m m m"
+    "m m m m m m m m m"
     "m m m m m m m m m"
     "f f f f f f f f f";
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -59,7 +54,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 #container-header {
@@ -75,6 +69,7 @@ body {
     ". . cs cs cs cs cs cp cp"
     ". . cs cs cs cs cs cp cp";
   grid-area: m;
+  background: #160b16;
 }
 
 #container-footer {

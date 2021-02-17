@@ -1,12 +1,12 @@
 <template>
   <div id="container-auth">
-    <span class="components-auth">
+    <span v-if="!ifLoggedIn" class="components-auth">
       <LoginModal />
     </span>
-    <span class="components-auth">
+    <span v-if="ifLoggedIn" class="components-auth">
       <Logout />
     </span>
-    <span class="components-auth">
+    <span v-if="!ifLoggedIn" class="components-auth">
       <RegisterModal />
     </span>
   </div>
@@ -16,6 +16,8 @@
 import LoginModal from "./Login.vue";
 import RegisterModal from "./Register.vue";
 import Logout from "./Logout.vue";
+import {mapGetters} from 'vuex';
+
 
 export default {
   name: "UserAuth",
@@ -26,6 +28,12 @@ export default {
   },
   data() {
     return {};
+  },
+  computed:{
+    ifLoggedIn(){
+      return this.$store.state.loggedIn;
+    },
+    ...mapGetters(['isLoggedIn']),
   },
   methods: {
     Logout() {
