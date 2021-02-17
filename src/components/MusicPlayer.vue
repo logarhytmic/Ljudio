@@ -23,12 +23,32 @@
         :tooltip-formatter="durationFormatter"
       ></vue-slider>
       <div class="controls">
-        <em class="material-icons" title="Skip to previous video" @click="previousVideo">skip_previous</em>
-        <em class="material-icons" title="Play video" @click="playVideo">play_arrow</em>
-        <em class="material-icons" title="Pause video" @click="pauseVideo">pause</em>
-        <em class="material-icons" title="Skip to next video" @click="nextVideo">skip_next</em>
-        <em class="material-icons" title="Add current song to a playlist" @click="addToPlaylist">playlist_add</em>
-        <em class="material-icons" title="Show the video player" id="toggle-video" @click="onVideoToggle"
+        <em
+          class="material-icons"
+          title="Skip to previous video"
+          @click="previousVideo"
+          >skip_previous</em
+        >
+        <em class="material-icons" title="Play video" @click="playVideo"
+          >play_arrow</em
+        >
+        <em class="material-icons" title="Pause video" @click="pauseVideo"
+          >pause</em
+        >
+        <em class="material-icons" title="Skip to next video" @click="nextVideo"
+          >skip_next</em
+        >
+        <em
+          class="material-icons"
+          title="Add current song to a playlist"
+          @click="addToPlaylist"
+          >playlist_add</em
+        >
+        <em
+          class="material-icons"
+          title="Show the video player"
+          id="toggle-video"
+          @click="onVideoToggle"
           >tv</em
         >
         <br />
@@ -168,7 +188,17 @@ export default {
     document.getElementById("show-player").style.visibility = "hidden";
   },
 
-  computed: {},
+  computed: {
+    currentSong() {
+      return this.$store.state.currentSong;
+    },
+  },
+
+  watch: {
+    currentSong(song) {
+      this.playSong(song);
+    },
+  },
 };
 </script>
 
