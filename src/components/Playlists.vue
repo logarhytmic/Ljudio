@@ -1,16 +1,19 @@
 <template>
     <div id="playlists">
         <p>playlists</p>
-        <span 
+        <span
+            v-bind:key="playlist.id"
             v-for="playlist in get_playlist"
-            :key="playlist.id"
             class="playlist-item">
-                <p>{{ playlist.title }}</p>
+                <div @click="fetch_songs('/api/current-playlist/' + playlist.id)">
+                    {{ playlist.title }}
+                </div>
         </span>
     </div>
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -38,6 +41,16 @@ export default {
                 },
             });
             this.$store.commit("addPlaylists", await res.json());
+        },
+        async fetch_songs(url) {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            this.$store.commit("addCurrentPlaylist", await res.json());
+            console.log(this.$store.state.songs);
         },
     }
 };

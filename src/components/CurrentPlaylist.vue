@@ -22,24 +22,16 @@ export default {
             },
         };
     },
-    mounted() {
-        this.fetch_songs("/api/current-playlist/1");
-    },
+    // mounted() {
+    //     this.fetch_songs("/api/current-playlist/1");
+    // },
     computed: {
         get_songs() {
             return this.$store.state.songs;
         }
     },
     methods: {
-        async fetch_songs(url) {
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
-            this.$store.commit("addCurrentPlaylist", await res.json());
-        },
+        
     }
 };
 </script>
