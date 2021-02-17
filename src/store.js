@@ -1,10 +1,12 @@
 import { createStore } from "vuex";
 
 const state = {
-  results: [],
-  queue: [],
-  loggedIn: false,
-  currentSong: {},
+    results: [],
+    playlists: [],
+    songs: [],
+    queue: [],
+    loggedIn: false,
+    currentSong: {},
 }
 
 const getters = {
@@ -23,6 +25,12 @@ const mutations = {
   setCurrentSong(state, song) {
     state.currentSong = song;
   },
+  addPlaylists(state, playlists) {
+    this.state.playlists = playlists;
+},
+addCurrentPlaylist(state, songs) {
+    this.state.songs = songs;
+},
 
   removeSongFromQueue(state, song) {
     // Mutations are void functions. They can not return anything. TODO: Convert this to an action with promise

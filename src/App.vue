@@ -64,17 +64,20 @@ body {
 #container-main {
   display: grid;
   grid-template-areas:
-    ". . cs cs cs cs cs cp cp"
-    ". . cs cs cs cs cs cp cp"
-    ". . cs cs cs cs cs cp cp"
-    ". . cs cs cs cs cs cp cp";
+    "pl pl cs cs cs cs cs cp cp"
+    "pl pl cs cs cs cs cs cp cp"
+    "pl pl cs cs cs cs cs cl cl"
+    "pl pl cs cs cs cs cs cl cl";
   grid-area: m;
   background: #160b16;
 }
 
-#container-footer {
-  display: grid;
-  grid-area: f;
+#container-playlists {
+  grid-area: pl;
+}
+
+#container-current-playlist {
+  grid-area: cl;
 }
 
 #container-search {
@@ -83,5 +86,10 @@ body {
 
 #container-player {
   grid-area: cp;
+}
+
+#container-footer {
+  display: grid;
+  grid-area: f;
 }
 </style>
