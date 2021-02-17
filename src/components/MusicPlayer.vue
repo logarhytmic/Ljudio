@@ -53,10 +53,19 @@
         >
         <br />
       </div>
+      <div class="volume">
+        <em id="vol" class="material-icons" title="Toggle mute" @click="onMuteToggle"
+          >volume_up</em
+        >
+        <vue-slider
+          ref="volume_slider"
+          v-model="volume"
+          v-bind="volume_options"
+          @change="setVolume(volume)"
+          tooltip-placement="bottom"
+        />
+      </div>
     </div>
-    <div class="volume"><img src="../assets/296-volume-medium.png" />
-    <vue-slider ref="volume_slider" v-model="volume" v-bind="volume_options" 
-    @change="setVolume(volume)"/></div>
   </div>
 </template>
 
@@ -78,7 +87,7 @@ export default {
         width: 350,
         height: 4,
         contained: false,
-        direction: 'ltr',
+        direction: "ltr",
         "drag-on-click": false,
       },
       value: 0,
@@ -91,7 +100,7 @@ export default {
     };
   },
   components: {
-    VueSlider
+    VueSlider,
   },
   methods: {
     onVideoToggle(event) {
@@ -115,6 +124,15 @@ export default {
       } else {
         playerDiv.style.visibility = "hidden";
         toggleEm.title = "Show the video player";
+      }
+    },
+    onMuteToggle(event) {
+      if (this.player.isMuted()) {
+        this.player.unMute();
+        event.target.style.color = "white";
+      } else {
+        this.player.mute();
+        event.target.style.color = "dimgray";
       }
     },
     formatDuration(ms) {
@@ -188,7 +206,7 @@ export default {
 
   async mounted() {
     this.player = new YT.Player("yt-player", {
-      videoId: "",
+      videoId: "2g_mv8DJ0X4",
       host: "https://www.youtube.com",
       playerVars: {
         autoplay: 0,
@@ -225,14 +243,9 @@ export default {
   grid-template-rows: auto;
   grid-template-columns: 400px;
   grid-template-areas:
-    "v v v v v"
-    "b b b b b"
-    "c c c c c";
+    "v v"
+    "b b";
   padding-top: 47px;
-}
-
-.mPlayer > img:active {
-  transform: scale(0.9);
 }
 
 .mPlayer > h3 {
@@ -279,17 +292,28 @@ export default {
   color: red;
 }
 
-.buttons {
-  grid-area: c;
-}
-
 .volume {
   grid-area: x;
   display: flex;
   justify-content: center;
+  color: white;
 }
 
-.volume img {
-  transform: scale(0.8);
-  }
+.volume > em {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.volume > em:hover {
+  color: coral;
+}
+
+.volume > em:active {
+  color: white;
+}
+
+#vol
+{
+  font-size: 16px;
+}
 </style>
