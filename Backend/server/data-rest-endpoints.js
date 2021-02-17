@@ -73,7 +73,7 @@ module.exports = (app, db) => {
 
     app.get('/api/playlists', async (request, response) => {
         if (request.session.user) {
-            user = await db.query(
+            let user = await db.query(
                 'SELECT * FROM users WHERE email = ? AND password = ?',
                 [request.session.user.email, request.session.user.password]
             );
@@ -118,7 +118,8 @@ module.exports = (app, db) => {
                 [
                     request.params.song.title,
                     request.params.song.originator,
-                    request.params.song.duration
+                    request.params.song.duration,
+                    request.params.song.ytid
                 ]
             );
             let song = song_res[0];
@@ -133,7 +134,6 @@ module.exports = (app, db) => {
         }
     })
 
-    // TODO: synch db and search song ids
     app.get('/api/current-playlist/:id', async (request, response) => {
         if (request.session.user) {
             let songs = await db.query(
@@ -154,7 +154,7 @@ module.exports = (app, db) => {
                 [request.params.id]
             );
             let pl_song_res = await db.query(
-                'DELETE * FROM song_playlist WHERE song_id = ?',
+                'DELETE * FROM playlist_song WHERE song_id = ?',
                 [request.params.id]
             );
             response.json([result, pl_song_res]);

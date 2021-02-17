@@ -159,10 +159,10 @@ export default {
       }
     },
     playSong(song) {
-      this.player.loadVideoById(song.Id);
+      this.player.loadVideoById(song.ytid);
       this.value = 0;
-      this.max = song.Duration / 1000;
-      this.fullname = song.Originator + " - " + song.Name;
+      this.max = song.duration / 1000;
+      this.fullname = song.originator + " - " + song.title;
     },
     onDragEnd(event) {
       this.player.seekTo(this.$refs.slider.getValue(), true);

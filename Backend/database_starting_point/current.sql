@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `song` (
   `title` varchar(255) COLLATE utf8mb4_swedish_ci DEFAULT NULL,
   `originator` varchar(255) COLLATE utf8mb4_swedish_ci DEFAULT NULL,
   `duration` int(11) DEFAULT NULL,
+  `ytid` varchar(50) COLLATE utf8mb4_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 

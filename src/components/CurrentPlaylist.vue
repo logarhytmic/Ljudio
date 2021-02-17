@@ -5,7 +5,7 @@
             v-for="song in get_songs"
             :key="song.id"
             class="song-item">
-                <p>{{ song.title }}</p>
+                <div @click="on_click(song)">{{ song.title }}</div>
         </span>
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
                 id: "",
                 title: "",
                 originator: "",
-                duration: "",
+                duration: 0,
             },
         };
     },
@@ -31,7 +31,11 @@ export default {
         }
     },
     methods: {
-        
+        async on_click(element) {
+            console.log(element);
+            this.$store.commit("addSongToQueue", element);
+            this.$store.commit("setCurrentSong", element);
+        },
     }
 };
 </script>
