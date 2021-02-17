@@ -148,7 +148,7 @@ export default {
     },
     setVolume() {
       this.player.setVolume(this.$refs.volume_slider.getValue());
-    }
+    },
     onPlayerReady(event) {},
     onPlayerStateChange(event) {
       if (event.data != YT.PlayerState.PLAYING) {
