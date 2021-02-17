@@ -1,22 +1,21 @@
 <template>
-
   <div v-if="ifLoggedIn" id="container-main">
     <div id="container-search">
-      <Search />
+      <Search ref="search" />
     </div>
     <div id="container-player">
-      <MusicPlayer />
+      <MusicPlayer ref="mPlayer" />
     </div>
   </div>
 </template>
 
 <script>
-import Search from "./Search.vue";
-import MusicPlayer from "./MusicPlayer.vue";
-import {mapGetters} from 'vuex';
+import Search from "../components/Search.vue";
+import MusicPlayer from "../components/MusicPlayer.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "Container",
+  name: "AppContent",
   components: {
     Search,
     MusicPlayer,
