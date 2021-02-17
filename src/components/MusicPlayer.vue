@@ -3,9 +3,9 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
-
+  <h3>{{ fullname }}</h3>
   <div class="mPlayer">
-    <h3>{{ fullname }}</h3>
+    
     <div id="show-player">
       <div id="yt-player"></div>
     </div>
@@ -243,9 +243,10 @@ export default {
   grid-template-rows: auto;
   grid-template-columns: 400px;
   grid-template-areas:
-    "v v"
-    "b b";
+    "v"
+    "b";
   padding-top: 47px;
+  justify-content: center;
 }
 
 .mPlayer > h3 {
@@ -260,12 +261,13 @@ export default {
 }
 
 .yt-player {
+  width: 100%;
   grid-area: v;
 }
 
 .bar {
   grid-area: b;
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   border: 1px solid #231123;
   box-shadow: 5px 5px 5px black;
