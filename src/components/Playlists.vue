@@ -1,6 +1,14 @@
 <template>
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+
     <div id="playlists">
-        <p>playlists</p>
+        <p>Playlists</p>
+         <div> <button id="button-add">
+        <em class="fa fa-plus"></em>
+      </button> </div>
         <span
             v-bind:key="playlist.id"
             v-for="playlist in get_playlist"
@@ -57,8 +65,27 @@ export default {
 </script>
 
 <style scoped>
-    .playlists {
-        display: flex;
-        flex-flow: column row;
-    }
+
+#playlists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  padding-top: 10px;
+}
+
+p {
+  color:white;
+}
+
+button {
+  border: 1px solid #3b203b;
+  background-color: #3b203b;
+  color: white;
+  padding: 5px;
+  padding-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
 </style>
