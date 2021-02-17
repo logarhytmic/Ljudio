@@ -1,7 +1,7 @@
 <template>
   <div v-if="ifLoggedIn" id="container-main">
     <div id="container-search">
-      <Search ref="search" v-on:play="onPlay" />
+      <Search ref="search" />
     </div>
     <div id="container-player">
       <MusicPlayer ref="mPlayer" />
@@ -19,11 +19,6 @@ export default {
   components: {
     Search,
     MusicPlayer,
-  },
-  methods: {
-    onPlay: function (song) {
-      this.$refs.mPlayer.playSong(song);
-    },
   },
   computed: {
     ifLoggedIn() {
