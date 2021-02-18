@@ -1,5 +1,5 @@
 <template>
- <link
+  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
@@ -7,17 +7,21 @@
     <div id="playlist-results">
       <div class="div-header">
         <h3>My Playlists</h3>
-          <button id="button-add">
-        <em class="fa fa-plus"></em>
-      </button>
+        <button id="button-add">
+          <em class="fa fa-plus"></em>
+        </button>
       </div>
       <div
         class="playlist-card"
-        @click="fetch_songs(playlist.id)"
         v-bind:key="playlist.id"
         v-for="playlist in get_playlist"
       >
-        <span>{{ playlist.title }}</span>
+        <div class="playlist-body" @click="fetch_songs(playlist.id)">
+          <span>{{ playlist.title }}</span>
+        </div>
+        <div class="button-delete" @click="delete_playlist(playlist)">
+          <em class="fa fa-times"></em>
+        </div>
       </div>
     </div>
   </div>
@@ -51,6 +55,22 @@ export default {
         },
       });
       this.$store.commit("addPlaylists", await res.json());
+    },
+
+    async delete_playlist(playlist) {
+      let sure = confirm("Do you want to remove " + playlist.title + "?");
+      if (sure) {
+        const res = await fetch("/api/playlists/", {
+          method: "DELETE",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(playlist),
+        });
+        this.fetch_playlists();
+      } else {
+      }
     },
 
     async fetch_songs(id) {
@@ -94,18 +114,18 @@ export default {
 }
 
 #playlist-results > div:first-child {
-    background-color: #351735;
-}
-
-#playlist-results > div:nth-child(2n+2):active {
-  background-color: #231123;
-}
-
-#playlist-results > div:nth-child(2n+3) {
   background-color: #351735;
 }
 
-#playlist-results > div:nth-child(2n+3):active {
+#playlist-results > div:nth-child(2n + 2):active {
+  background-color: #231123;
+}
+
+#playlist-results > div:nth-child(2n + 3) {
+  background-color: #351735;
+}
+
+#playlist-results > div:nth-child(2n + 3):active {
   background-color: #231123;
 }
 
@@ -117,13 +137,18 @@ export default {
   padding-bottom: 2px;
   cursor: pointer;
   border-bottom: 1px solid black;
+  justify-content: space-between;
 }
 
-.playlist-card > span:hover {
+.playlist-body > span:hover {
   color: coral;
 }
 
-.playlist-card > span:hover {
+.playlist-body > span:hover {
+  color: coral;
+}
+
+.button-delete > em:hover {
   color: coral;
 }
 </style>

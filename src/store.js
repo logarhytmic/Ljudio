@@ -29,6 +29,7 @@ const mutations = {
   addPlaylists(state, playlists) {
     state.playlists = playlists;
   },
+
   addCurrentPlaylist(state, songs) {
     state.songs = songs;
   },

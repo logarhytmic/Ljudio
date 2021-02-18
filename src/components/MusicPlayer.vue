@@ -340,5 +340,6 @@ export default {
 #vol
 {
   font-size: 16px;
+  user-select: none;
 }
 </style>

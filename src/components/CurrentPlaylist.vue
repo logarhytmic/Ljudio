@@ -9,16 +9,21 @@
         <h3>Current Queue</h3>
       </div>
       <div
+        class="song-card"
         v-for="song in get_songs"
         :key="song.id"
         @click="on_click(song)"
-        class="song-card"
       >
-        <span
-          >{{ song.originator }} - {{ song.title }} [{{
-            formatDuration(song.duration)
-          }}]</span
-        >
+        <div class="song-body">
+          <span
+            >{{ song.originator }} - {{ song.title }} [{{
+              formatDuration(song.duration)
+            }}]</span
+          >
+        </div>
+        <div class="button-delete" @click="delete_song(song.id)">
+          <em class="fa fa-times"></em>
+        </div>
       </div>
     </div>
   </div>
@@ -123,11 +128,15 @@ export default {
   border-bottom: 1px solid black;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
   color: coral;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
+  color: coral;
+}
+
+.button-delete > em:hover {
   color: coral;
 }
 </style>
