@@ -6,6 +6,9 @@ const state = {
   songs: [],
   //loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
+  currentPlaylist: {
+
+  },
 }
 
 const getters = {
@@ -23,8 +26,13 @@ const mutations = {
   addPlaylists(state, playlists) {
     state.playlists = playlists;
   },
+
   addCurrentPlaylist(state, songs) {
     state.songs = songs;
+  },
+
+  setCurrentPlaylist(state, playlist) {
+    state.currentPlaylist = playlist;
   },
 
   removeSongFromQueue(state, song) {
