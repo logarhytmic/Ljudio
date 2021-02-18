@@ -7,18 +7,26 @@
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
+        <div>
+            <em @click="share_songs()" class="material-icons">share</em>
+        </div>
       </div>
       <div
+        class="song-card"
         v-for="song in get_songs"
         :key="song.id"
         @click="on_click(song)"
-        class="song-card"
       >
-        <span
-          >{{ song.originator }} - {{ song.title }} [{{
-            formatDuration(song.duration)
-          }}]</span
-        >
+        <div class="song-body">
+          <span
+            >{{ song.originator }} - {{ song.title }} [{{
+              formatDuration(song.duration)
+            }}]</span
+          >
+        </div>
+        <div class="button-delete" @click="delete_song(song)">
+          <em class="fa fa-times"></em>
+        </div>
       </div>
     </div>
   </div>
@@ -42,6 +50,27 @@ export default {
     },
   },
   methods: {
+    async delete_song(song) {
+      const res = await fetch("/api/playlists/song", {
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(song),
+      });
+      const temp = await fetch(
+        "/api/current-playlist/" + this.$store.state.currentPlaylist.id,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      this.$store.commit("addCurrentPlaylist", await temp.json());
+    },
+
     async on_click(element) {
       // TODO when current song ends, set next one in songs[] to current
       // TODO how to make page react to slider reaching maximum
@@ -68,6 +97,18 @@ export default {
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
+    async share_songs() {
+      let pl = prompt("Please input playlist id");
+      const res = await fetch("/api/current-playlist/" + pl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      this.$store.commit("addCurrentPlaylist", await res.json());
+      console.log(this.$store.state.songs);
+    },
   },
 };
 </script>
@@ -91,6 +132,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -115,19 +157,24 @@ export default {
 
 .song-card {
   display: flex;
+  justify-content: space-between;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
   cursor: pointer;
   border-bottom: 1px solid black;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
   color: coral;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
+  color: coral;
+}
+
+.button-delete > em:hover {
   color: coral;
 }
 </style>

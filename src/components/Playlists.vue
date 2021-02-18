@@ -17,7 +17,12 @@
         v-bind:key="playlist.id"
         @click="fetch_songs(playlist)"
       >
-        <span>{{ playlist.title }}</span>
+        <div class="playlist-body" @click="fetch_songs(playlist)">
+          <span>{{ playlist.title }}</span>
+        </div>
+        <div class="button-delete" @click="delete_playlist(playlist)">
+          <em class="fa fa-times"></em>
+        </div>
       </div>
     </div>
   </div>
@@ -53,6 +58,21 @@ export default {
       this.$store.commit("addPlaylists", await res.json());
     },
 
+    async delete_playlist(playlist) {
+      let sure = confirm("Do you want to remove " + playlist.title + "?");
+      if (sure) {
+        const res = await fetch("/api/playlists/", {
+          method: "DELETE",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(playlist),
+        });
+        this.fetch_playlists();
+      }
+    },
+    
     async fetch_songs(playlist) {
       await this.$store.commit("setCurrentPlaylist", playlist);
       const res = await fetch("/api/current-playlist/" + playlist.id, {
@@ -139,18 +159,23 @@ export default {
 .playlist-card {
   display: flex;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
   cursor: pointer;
   border-bottom: 1px solid black;
+  justify-content: space-between;
 }
 
-.playlist-card > span:hover {
+.playlist-body > span:hover {
   color: coral;
 }
 
-.playlist-card > span:hover {
+.playlist-body > span:hover {
+  color: coral;
+}
+
+.button-delete > em:hover {
   color: coral;
 }
 
