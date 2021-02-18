@@ -1,13 +1,4 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  />
-
   <!-- Search input and button -->
   <div id="search">
     <!-- Display search result -->
@@ -39,13 +30,13 @@
             >
             <span
               v-else-if="
-                (card.type == 'albums' ||
+                (card.type == 'album' ||
                   card.type == 'single' ||
                   card.type == 'ep') &&
                 /^\d+$/.test(card.year)
               "
             >
-              [{{ card.year }}]</span
+              {{ card.name }} [{{ card.year }}]</span
             >
           </span>
         </div>
@@ -66,10 +57,18 @@
     <span class="modal__title"></span>
     <form @submit.prevent="">
       <div class="modal__content">
-        <label ref="modalLabel" id="modal-p">Choose the playlist to save song to</label>
+        <label ref="modalLabel" id="modal-p"
+          >Choose the playlist to save song to</label
+        >
         <div class="container-input">
           <select name="playlists" id="select-playlist">
-            <option v-for="(playlist, i) in getPlaylists" :key="i" :value="JSON.stringify(playlist)">{{ playlist.title }}</option>
+            <option
+              v-for="(playlist, i) in getPlaylists"
+              :key="i"
+              :value="JSON.stringify(playlist)"
+            >
+              {{ playlist.title }}
+            </option>
           </select>
         </div>
       </div>
@@ -155,11 +154,21 @@ export default {
     },
 
     async onClick(element) {
-      // Stores the song in the temporary queue, which is stored in the store.js under the queue array
-      this.$store.commit("addSongToQueue", element);
-      // Here you would want to call the playVideoById youtube api function with the elements Id
       if (element.type === "song") {
         this.$store.commit("setCurrentSong", element);
+      } else if (
+        element.type === "album" ||
+        element.type === "single" ||
+        element.type === "ep"
+      ) {
+        let albumRes = await this.FetchData("/api/yt/album/" + element.id);
+
+        this.$store.commit(
+          "addResults",
+          await this.iterRawAlbumData(albumRes.tracks)
+        );
+      } else if (element.type === "artist") {
+        //
       }
     },
 
@@ -232,10 +241,30 @@ export default {
       return results;
     },
 
+    async iterRawAlbumData(data) {
+      let results = [];
+      let tempSong = {};
+
+      data.forEach((e) => {
+        tempSong = {
+          id: e.videoId,
+          ytid: e.videoId,
+          type: "song",
+          originator: e.artistNames,
+          title: e.name,
+          duration: e.duration,
+        };
+
+        results.push(tempSong);
+      });
+
+      return results;
+    },
+
     async Search() {
       let str = this.searchString;
 
-      if (str.trim().length > 0) {
+      if (str.trim()) {
         if (str.startsWith("@albums")) {
           let data = await this.FetchData(
             "/api/yt/albums/" + str.substring(7).trim()
