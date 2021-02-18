@@ -204,7 +204,7 @@ export default {
 
   async mounted() {
     this.player = new YT.Player("yt-player", {
-      videoId: "2g_mv8DJ0X4",
+      videoId: "",
       host: "https://www.youtube.com",
       playerVars: {
         autoplay: 0,
