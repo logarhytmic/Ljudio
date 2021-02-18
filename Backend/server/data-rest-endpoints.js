@@ -122,9 +122,8 @@ module.exports = (app, db) => {
         }
     })
 
-    app.post('/api/current-playlist/:pl_id&:song', async (request, response) => {
+    app.post('/api/playlists/song', async (request, response) => {
         let user;
-        let current_playlist;
         if (request.session.user) {
             user = await db.query(
                 'SELECT * FROM users WHERE email = ? AND password = ?',
@@ -134,27 +133,38 @@ module.exports = (app, db) => {
         }
 
         if (user && user.email) {
-            current_playlist = await db.query(
-                'SELECT * FROM playlist WHERE id = ?',
-                [request.params.pl_id]
-            );
-            current_playlist = current_playlist[0];
-            let song_res = await db.query(
-                'INSERT INTO song SET ?',
-                [
-                    request.params.song.title,
-                    request.params.song.originator,
-                    request.params.song.duration,
-                    request.params.song.ytid
-                ]
-            );
-            let song = song_res[0];
-            let pl_song_res = await db.query(
-                'INSERT INTO playlist_song SET ?',
-                [current_playlist.id, song.id]
-            );
+            let jsonPlaylist = JSON.parse(request.body[0]);
+            let jsonSong = JSON.parse(request.body[1]);
 
-            response.json([current_playlist, pl_song_res]);
+            let playlist = await db.query(
+                'SELECT * FROM playlist WHERE playlist.id = ? AND playlist.userid = ?',
+                [jsonPlaylist.id, user.id]
+            );
+            playlist = playlist[0]
+
+            if (playlist && playlist.title) {
+                let insertRes = await db.query(
+                    'INSERT INTO song (title, originator, duration, ytid) VALUES (?, ?, ? ,?)',
+                    [
+                        jsonSong.title,
+                        jsonSong.originator,
+                        jsonSong.duration,
+                        jsonSong.ytid
+                    ]
+                );
+
+                if (insertRes && insertRes.affectedRows > 0) {
+                    let playlistSong = await db.query(
+                        'INSERT INTO playlist_song VALUES (?, ?)',
+                        [playlist.id, insertRes.insertId]
+                    );
+
+                    response.json(playlistSong);
+                }
+            } else {
+                response.status(404);
+                response.json({ message: "not found" });
+            }
         } else {
             response.status(401)
             response.json({ message: "unauthorized" })
