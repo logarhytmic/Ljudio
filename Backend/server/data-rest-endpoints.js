@@ -124,7 +124,6 @@ module.exports = (app, db) => {
 
     app.post('/api/current-playlist/:pl_id&:song', async (request, response) => {
         let user;
-
         let current_playlist;
         if (request.session.user) {
             user = await db.query(
