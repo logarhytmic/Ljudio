@@ -48,7 +48,7 @@ export default {
       // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
       //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
       // }
-      this.$store.commit("addSongToQueue", element);
+      
       this.$store.commit("setCurrentSong", element);
     },
     formatDuration(ms) {
