@@ -107,7 +107,7 @@ module.exports = (app, db) => {
         }
         if (user && user.email) {
             let pl_song_res = await db.query(
-                'DELETE FROM playlist_song WHERE playlist_id = ?',
+                'DELETE FROM playlist WHERE id = ?',
                 [request.body.id]
             );
             response.json(pl_song_res);
@@ -189,7 +189,7 @@ module.exports = (app, db) => {
         }
     })
 
-    app.delete('/api/current-playlist/:id', async (request, response) => {
+    app.delete('/api/playlists/song', async (request, response) => {
         let user;
         if (request.session.user) {
             user = await db.query(
@@ -198,17 +198,12 @@ module.exports = (app, db) => {
             );
             user = user[0];
         }
-
         if (user && user.email) {
-            let result = await db.query(
-                'DELETE * FROM song WHERE id = ?',
-                [request.params.id]
+            let song_res = await db.query(
+                'DELETE FROM song WHERE id = ?',
+                [request.body.id]
             );
-            let pl_song_res = await db.query(
-                'DELETE * FROM playlist_song WHERE song_id = ?',
-                [request.params.id]
-            );
-            response.json([result, pl_song_res]);
+            response.json(song_res);
         } else {
             response.status(401);
             response.json({ message: "unauthorized" });

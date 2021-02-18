@@ -21,7 +21,7 @@
             }}]</span
           >
         </div>
-        <div class="button-delete" @click="delete_song(song.id)">
+        <div class="button-delete" @click="delete_song(song)">
           <em class="fa fa-times"></em>
         </div>
       </div>
@@ -47,13 +47,33 @@ export default {
     },
   },
   methods: {
+    async delete_song(song) {
+      const res = await fetch("/api/playlists/song", {
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(song),
+      });
+      const temp = await fetch(
+        "/api/current-playlist/" + this.$store.state.currentPlaylist.id,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      this.$store.commit("addCurrentPlaylist", await temp.json());
+    },
+
     async on_click(element) {
       // TODO when current song ends, set next one in songs[] to current
       // TODO how to make page react to slider reaching maximum
       // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
       //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
       // }
-      this.$store.commit("addSongToQueue", element);
       this.$store.commit("setCurrentSong", element);
     },
     formatDuration(ms) {
