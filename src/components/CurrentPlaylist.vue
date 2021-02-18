@@ -1,23 +1,18 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  />
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
         <div>
-            <em @click="share_songs()" class="material-icons">share</em>
+            <em @click="share_songs()" id="em-share" class="material-icons" title="Share">share</em>
         </div>
       </div>
       <div
         class="song-card"
         v-for="song in get_songs"
         :key="song.id"
-        @click="on_click(song)"
       >
-        <div class="song-body">
+        <div class="song-body" @click="on_click(song)">
           <span
             >{{ song.originator }} - {{ song.title }} [{{
               formatDuration(song.duration)
@@ -77,7 +72,6 @@ export default {
       // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
       //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
       // }
-      
       this.$store.commit("setCurrentSong", element);
     },
     formatDuration(ms) {
@@ -133,6 +127,7 @@ export default {
 
 .div-header {
   display: flex;
+  justify-content: space-between;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -175,6 +170,16 @@ export default {
 }
 
 .button-delete > em:hover {
+  color: coral;
+}
+
+#em-share {
+  cursor: pointer;
+  user-select: none;
+  padding-right: 5px;
+}
+
+#em-share:hover {
   color: coral;
 }
 </style>
