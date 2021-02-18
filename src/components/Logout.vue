@@ -11,31 +11,20 @@ export default {
   methods: {
     Logout() {
       fetch("/api/login", {
-        method: "GET",
+        method: "DELETE",
       })
         .then((r) => r.json())
         .then((d) => {
-          if (d.loggedIn == true) {
-            fetch("/api/login", {
-              method: "DELETE",
-            })
-              .then((r) => r.json())
-              .then((d) => {
-                console.log("Success:", d);
-                localStorage.setItem("loggedIn", "false");
-
-                this.$store.commit("checkLoggedIn");
-                this.$store.commit("clearStore");
-                this.$router.push("/");
-              })
-              .catch((e) => {
-                console.error("Error:", e);
-              });
-          }
+          //
         })
         .catch((e) => {
-          console.error("Error", e);
+          console.error("Error:", e);
         });
+
+      localStorage.setItem("loggedIn", "false");
+      this.$store.commit("checkLoggedIn");
+      this.$store.commit("clearStore");
+      this.$router.push("/");
     },
   },
 };

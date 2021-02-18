@@ -7,6 +7,9 @@
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
+        <div>
+            <em @click="share_songs()" class="material-icons">share</em>
+        </div>
       </div>
       <div
         v-for="song in get_songs"
@@ -51,8 +54,8 @@ export default {
       this.$store.commit("addSongToQueue", element);
       this.$store.commit("setCurrentSong", element);
     },
-    formatDuration(sec) {
-      let s = sec.toFixed(0);
+    formatDuration(ms) {
+      let s = (ms / 1000).toFixed(0);
       let m = Math.floor(s / 60);
       let h = "";
 
@@ -67,6 +70,18 @@ export default {
       s = s >= 10 ? s : "0" + s;
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
+    },
+    async share_songs() {
+      let pl = prompt("Please input playlist id");
+      const res = await fetch("/api/current-playlist/" + pl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      this.$store.commit("addCurrentPlaylist", await res.json());
+      console.log(this.$store.state.songs);
     },
   },
 };
@@ -91,6 +106,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;

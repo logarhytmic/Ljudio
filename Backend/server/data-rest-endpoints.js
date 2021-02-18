@@ -60,8 +60,11 @@ module.exports = (app, db) => {
                 [request.session.user.email, request.session.user.password]
             );
             user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
-                'INSERT INTO playlist SET ?', [request.title, request.session.user.id]
+                'INSERT INTO playlist (title, userid) VALUES (?, ?)', [request.body.title, request.session.user.id]
             );
             response.json(result);
         }
@@ -72,11 +75,16 @@ module.exports = (app, db) => {
     })
 
     app.get('/api/playlists', async (request, response) => {
+        let user;
         if (request.session.user) {
-            let user = await db.query(
+            user = await db.query(
                 'SELECT * FROM users WHERE email = ? AND password = ?',
                 [request.session.user.email, request.session.user.password]
             );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'SELECT * FROM playlist WHERE userid = ?', request.session.user.id
             );
@@ -89,7 +97,16 @@ module.exports = (app, db) => {
     })
 
     app.delete('/api/playlists/:id', async (request, response) => {
+        let user;
         if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'DELETE * FROM playlist WHERE id = ?',
                 [request.params.id]
@@ -105,29 +122,49 @@ module.exports = (app, db) => {
         }
     })
 
-    app.post('/api/current-playlist/:pl_id&:song', async (request, response) => {
-        let current_playlist;
+    app.post('/api/playlists/song', async (request, response) => {
+        let user;
         if (request.session.user) {
-            current_playlist = await db.query(
-                'SELECT * FROM playlist WHERE id = ?',
-                [request.params.pl_id]
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
             );
-            current_playlist = current_playlist[0];
-            let song_res = await db.query(
-                'INSERT INTO song SET ?',
-                [
-                    request.params.song.title,
-                    request.params.song.originator,
-                    request.params.song.duration,
-                    request.params.song.ytid
-                ]
+            user = user[0];
+        }
+
+        if (user && user.email) {
+            let jsonPlaylist = JSON.parse(request.body[0]);
+            let jsonSong = JSON.parse(request.body[1]);
+
+            let playlist = await db.query(
+                'SELECT * FROM playlist WHERE playlist.id = ? AND playlist.userid = ?',
+                [jsonPlaylist.id, user.id]
             );
-            let song = song_res[0];
-            let pl_song_res = await db.query(
-                'INSERT INTO playlist_song SET ?',
-                [current_playlist.id, song.id]
-            );
-            response.json([current_playlist, pl_song_res]);
+            playlist = playlist[0]
+
+            if (playlist && playlist.title) {
+                let insertRes = await db.query(
+                    'INSERT INTO song (title, originator, duration, ytid) VALUES (?, ?, ? ,?)',
+                    [
+                        jsonSong.title,
+                        jsonSong.originator,
+                        jsonSong.duration,
+                        jsonSong.ytid
+                    ]
+                );
+
+                if (insertRes && insertRes.affectedRows > 0) {
+                    let playlistSong = await db.query(
+                        'INSERT INTO playlist_song VALUES (?, ?)',
+                        [playlist.id, insertRes.insertId]
+                    );
+
+                    response.json(playlistSong);
+                }
+            } else {
+                response.status(404);
+                response.json({ message: "not found" });
+            }
         } else {
             response.status(401)
             response.json({ message: "unauthorized" })
@@ -135,11 +172,21 @@ module.exports = (app, db) => {
     })
 
     app.get('/api/current-playlist/:id', async (request, response) => {
+        let user;
         if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let songs = await db.query(
                 'SELECT DISTINCT s.* FROM song s INNER JOIN playlist_song p ON s.id = p.song_id WHERE p.playlist_id = ?',
                 [request.params.id]
             );
+
             response.json(songs);
         } else {
             response.status(401);
@@ -147,8 +194,17 @@ module.exports = (app, db) => {
         }
     })
 
-    app.delete('/api/current-playlist/:id', async (request, response) =>{
+    app.delete('/api/current-playlist/:id', async (request, response) => {
+        let user;
         if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'DELETE * FROM song WHERE id = ?',
                 [request.params.id]
@@ -225,5 +281,5 @@ module.exports = (app, db) => {
     app.all('/api/*', async (req, res) => {
         res.status(404)
         res.end()
-      })
+    })
 }
