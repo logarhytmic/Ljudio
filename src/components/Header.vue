@@ -1,10 +1,7 @@
 <template>
-  <header class="header">
-    <div class="logo">
-      <!-- <img src="../assets/shoreline.png" alt="shoreline-logo-image-png" /> -->
+  <header id="header">
       <h1>Spela Shoreline</h1>
-    </div>
-    <div class="user-auth">
+    <div id="user-auth">
       <UserAuth />
     </div>
   </header>
@@ -22,22 +19,15 @@ export default {
 </script>
 
 <style scoped>
-.header {
+#header {
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: auto;
-  justify-content: space-evenly;
-  width: 100%;
   background: #231123;
   color: #fff;
   text-align: center;
-  padding: 20px;
+  border: 1px solid black;
+  height: 100%;
 }
 
-.header > h1 {
-  align-self: center;
-}
-
-.logo > img {
-}
 </style>

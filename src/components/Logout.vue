@@ -25,6 +25,7 @@ export default {
                 localStorage.setItem("loggedIn", "false");
 
                 this.$store.commit("checkLoggedIn");
+                this.$store.commit("clearStore");
                 this.$router.push("/");
               })
               .catch((e) => {

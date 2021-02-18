@@ -3,9 +3,11 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
-
   <div class="mPlayer">
-    <h3>{{ fullname }}</h3>
+    <div id="mPlayer-header">
+      <span id="span-now-playing">Now playing: </span>
+      <span id="span-song-fullname">{{ fullname }}</span>
+    </div>
     <div id="show-player">
       <div id="yt-player"></div>
     </div>
@@ -51,7 +53,18 @@
           @click="onVideoToggle"
           >tv</em
         >
-        <br />
+      </div>
+      <div class="volume">
+        <em id="vol" class="material-icons" title="Toggle mute" @click="onMuteToggle"
+          >volume_up</em
+        >
+        <vue-slider
+          ref="volume_slider"
+          v-model="volume"
+          v-bind="volume_options"
+          @change="setVolume(volume)"
+          tooltip-placement="bottom"
+        />
       </div>
     </div>
   </div>
@@ -69,6 +82,15 @@ export default {
   data() {
     return {
       player: null,
+      volume: 50,
+      volume_options: {
+        dotSize: 12,
+        width: 350,
+        height: 4,
+        contained: false,
+        direction: "ltr",
+        "drag-on-click": false,
+      },
       value: 0,
       max: 1000,
       durationFormatter: (e) => this.formatDuration(e * 1000),
@@ -78,7 +100,6 @@ export default {
       showVideo: 0,
     };
   },
-
   methods: {
     onVideoToggle(event) {
       if (this.showVideo === 1) {
@@ -101,6 +122,15 @@ export default {
       } else {
         playerDiv.style.visibility = "hidden";
         toggleEm.title = "Show the video player";
+      }
+    },
+    onMuteToggle(event) {
+      if (this.player.isMuted()) {
+        this.player.unMute();
+        event.target.style.color = "white";
+      } else {
+        this.player.mute();
+        event.target.style.color = "dimgray";
       }
     },
     formatDuration(ms) {
@@ -132,6 +162,9 @@ export default {
     previousVideo() {
       this.player.previousVideo();
     },
+    setVolume() {
+      this.player.setVolume(this.$refs.volume_slider.getValue());
+    },
     onPlayerReady(event) {},
     onPlayerStateChange(event) {
       if (event.data != YT.PlayerState.PLAYING) {
@@ -159,10 +192,10 @@ export default {
       }
     },
     playSong(song) {
-      this.player.loadVideoById(song.Id);
+      this.player.loadVideoById(song.ytid);
       this.value = 0;
-      this.max = song.Duration / 1000;
-      this.fullname = song.Originator + " - " + song.Name;
+      this.max = song.duration / 1000;
+      this.fullname = song.originator + " - " + song.title;
     },
     onDragEnd(event) {
       this.player.seekTo(this.$refs.slider.getValue(), true);
@@ -171,14 +204,14 @@ export default {
 
   async mounted() {
     this.player = new YT.Player("yt-player", {
-      videoId: "",
+      videoId: "2g_mv8DJ0X4",
       host: "https://www.youtube.com",
       playerVars: {
         autoplay: 0,
         controls: 0,
       },
-      height: "300",
-      width: "400",
+      height: "400",
+      width: "600",
       events: {
         onReady: this.onPlayerReady,
         onStateChange: this.onPlayerStateChange,
@@ -204,21 +237,30 @@ export default {
 
 <style scoped>
 .mPlayer {
-  grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas:
-    "v v v v v"
-    "b b b b b"
-    "c c c c c";
-  padding-top: 47px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  height: 100%;
 }
 
 .mPlayer > img:active {
   transform: scale(0.9);
 }
 
-.mPlayer > h3 {
+#mPlayer-header {
+  display: flex;
+  justify-content: space-between;
   color: white;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  margin-bottom: 8px;
+  background-color: #351735;
+}
+
+.show-player {
+  margin-top: 20px;
 }
 
 #v-slider {
@@ -229,15 +271,15 @@ export default {
 }
 
 .yt-player {
-  grid-area: v;
 }
 
 .bar {
-  grid-area: b;
-  width: 60%;
-  margin: 0 auto;
-  border: 1px solid #231123;
+  width: 100%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
   box-shadow: 5px 5px 5px black;
+  background-color: #351735;
 }
 
 .controls {
@@ -259,5 +301,44 @@ export default {
 
 #toggle-video {
   color: red;
+}
+
+#span-now-playing {
+  padding-left: 10px;
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+#span-song-fullname {
+  padding-right: 10px;
+  font-size: 18px;
+}
+
+.volume {
+  grid-area: x;
+  display: flex;
+  justify-content: center;
+  color: white;
+  padding: 0px 20px 10px 0px;
+}
+
+.volume > em {
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.volume > em:hover {
+  color: coral;
+}
+
+.volume > em:active {
+  color: white;
+}
+
+
+#vol
+{
+  font-size: 16px;
 }
 </style>

@@ -3,6 +3,8 @@ import { createStore } from "vuex";
 const state = {
 
   results: [],
+  playlists: [],
+  songs: [],
   queue: [],
   loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
@@ -14,23 +16,29 @@ const getters = {
 
 const mutations = {
   addResults(state, results) {
-    this.state.results = results;
+    state.results = results;
   },
 
   addSongToQueue(state, song) {
-    this.state.queue.push(song);
+    state.queue.push(song);
   },
 
   setCurrentSong(state, song) {
     state.currentSong = song;
   },
+  addPlaylists(state, playlists) {
+    state.playlists = playlists;
+  },
+  addCurrentPlaylist(state, songs) {
+    state.songs = songs;
+  },
 
   removeSongFromQueue(state, song) {
     // Mutations are void functions. They can not return anything. TODO: Convert this to an action with promise
-    let index = this.state.queue.findIndex((e) => Object.toJson(e) == Object.toJson(song));
+    let index = state.queue.findIndex((e) => Object.toJson(e) == Object.toJson(song));
 
     if (index != -1) {
-      this.state.queue = this.state.queue.splice(index, 1);
+      state.queue = state.queue.splice(index, 1);
 
       return 1;
     }
@@ -39,8 +47,16 @@ const mutations = {
   },
 
   checkLoggedIn(state) {
-    this.state.loggedIn = !this.state.loggedIn;
+    state.loggedIn = !state.loggedIn;
   },
+
+  clearStore(state) {
+    state.results = [];
+    state.playlists = [];
+    state.songs = [];
+    state.queue = [];
+    state.currentSong = {};
+  }
 }
 
 export default createStore({ state, getters, mutations });

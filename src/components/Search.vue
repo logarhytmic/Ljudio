@@ -10,39 +10,42 @@
 
   <!-- Search input and button -->
   <div id="search">
-    <form id="form-search" @submit.prevent="Search()">
-      <input
-        v-model="searchString"
-        id="input-search"
-        type="search"
-        alt="input-search"
-        name="input-search"
-        placeholder="search..."
-      />
-      <button id="button-search">
-        <em class="fa fa-search"></em>
-      </button>
-    </form>
-
     <!-- Display search result -->
     <div id="search-result">
-      <div v-for="card in searchCards" :key="card.Id" class="search-card">
+      <div id="div-input">
+        <form id="form-search" @submit.prevent="Search()">
+          <input
+            v-model="searchString"
+            id="input-search"
+            type="search"
+            alt="input-search"
+            name="input-search"
+            placeholder="search..."
+          />
+          <div id="div-input-search">
+            <button id="button-search">
+              <em class="fa fa-search"></em>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div v-for="card in searchCards" :key="card.ytid" class="search-card">
         <div @click="onClick(card)" class="card-content">
           <span class="p-result">
-            [{{ card.Type }}] {{ card.Originator }}
-            <span v-if="card.Type != 'artist'"> - {{ card.Name }}</span>
-            <span v-if="card.Type == 'song'">
-              [{{ formatDuration(card.Duration) }}]</span
+            [{{ card.type }}] {{ card.originator }}
+            <span v-if="card.type != 'artist'"> - {{ card.title }}</span>
+            <span v-if="card.type == 'song'">
+              [{{ formatDuration(card.duration) }}]</span
             >
             <span
               v-else-if="
-                (card.Type == 'albums' ||
-                  card.Type == 'single' ||
-                  card.Type == 'ep') &&
-                /^\d+$/.test(card.Year)
+                (card.type == 'albums' ||
+                  card.type == 'single' ||
+                  card.type == 'ep') &&
+                /^\d+$/.test(card.year)
               "
             >
-              [{{ card.Year }}]</span
+              [{{ card.year }}]</span
             >
           </span>
         </div>
@@ -99,7 +102,7 @@ export default {
       // Stores the song in the temporary queue, which is stored in the store.js under the queue array
       this.$store.commit("addSongToQueue", element);
       // Here you would want to call the playVideoById youtube api function with the elements Id
-      if (element.Type === "song") {
+      if (element.type === "song") {
         this.$store.commit("setCurrentSong", element);
       }
     },
@@ -117,36 +120,37 @@ export default {
 
     getSongData(e) {
       let song = {
-        Id: e.videoId,
-        Type: e.type,
-        Originator: e.artist.name,
-        Name: e.name,
-        Duration: e.duration,
+        id: e.videoId,
+        ytid: e.videoId,
+        type: e.type,
+        originator: e.artist.name,
+        title: e.name,
+        duration: e.duration,
       };
 
       return song;
     },
 
     getAlbumData(e) {
-      let song = {
-        Id: e.browseId,
-        Type: e.type,
-        Originator: e.artist,
-        Name: e.name,
-        Year: e.year,
+      let album = {
+        id: e.browseId,
+        type: e.type,
+        originator: e.artist,
+        name: e.name,
+        year: e.year,
       };
 
-      return song;
+      return album;
     },
 
     getArtistData(e) {
-      let song = {
-        Id: e.browseId,
-        Type: e.type,
-        Originator: e.name,
+      let artist = {
+        id: e.browseId,
+        type: e.type,
+        originator: e.name,
       };
 
-      return song;
+      return artist;
     },
 
     async iterRawData(data) {
@@ -180,7 +184,7 @@ export default {
           let data = await this.FetchData(
             "/api/yt/albums/" + str.substring(7).trim()
           );
-          
+
           this.$store.commit("addResults", await this.iterRawData(data));
         } else if (str.startsWith("@artists")) {
           let data = await this.FetchData(
@@ -207,65 +211,56 @@ export default {
 
 <style scoped>
 #search {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: auto;
-  grid-template-areas:
-    "fr fr fr fr fr fr fr fr fr"
-    "csr csr csr csr csr csr csr csr csr";
-  padding-top: 10px;
+  width: 100%;
+  height: 100%;
 }
 
-#form-search {
-  grid-area: fr;
-}
-
-/* HÄR IFRÅN */
 #search-result {
-  grid-area: csr;
-  border: 1px solid #231123;
-  margin-top: 1vh;
+  border: 1px solid black;
+  /* border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black; */
   color: white;
-  min-height: 60vh;
   text-align: left;
+  user-select: none;
+  height: 100%;
 }
 
-#search-result > div:nth-child(odd) {
+#search-result > div:first-child {
+  cursor: default;
   background-color: #351735;
-  border-left: 1px solid #231123;
-  border-right: 1px solid #231123;
 }
 
-#search-result > div:nth-child(even) {
-  border-left: 1px solid #351735;
-  border-right: 1px solid #351735;
-}
-
-#search-result > div:nth-child(odd):active {
+#search-result > div:nth-child(2n + 2):active {
   background-color: #231123;
-  border-left: 1px solid #351735;
-  border-right: 1px solid #351735;
 }
 
-#search-result > div:nth-child(even):active {
+#search-result > div:nth-child(2n + 3) {
   background-color: #351735;
-  border-left: 1px solid #231123;
-  border-right: 1px solid #231123;
+}
+
+#search-result > div:nth-child(2n + 3):active {
+  background-color: #231123;
 }
 
 .search-card {
   display: flex;
   padding-left: 5px;
   padding-right: 3px;
-  justify-content: space-between;
   cursor: pointer;
+  border-bottom: 1px solid black;
 }
 
 .search-card > .card-content:hover > span {
   color: coral;
 }
 
+.search-card > .card-playlist-add {
+  /* font-size: 12px; */
+}
+
 .search-card > .card-playlist-add > em {
+  user-select: none;
   cursor: pointer;
 }
 
@@ -277,16 +272,27 @@ export default {
   width: 100%;
 }
 
-/* TILL HIT */
+#div-input {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 3px;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
 
-input {
+#div-input > #form-search {
+  display: grid;
+  grid-template-columns: 99% 1%;
+  grid-template-rows: auto;
+  grid-template-areas: "l r";
+}
+
+#div-input > #form-search > input {
+  grid-area: l;
   background-color: transparent;
   box-shadow: none;
-  /* border: none; */
-  border: 1px solid #231123;
-  padding: 1px;
-  padding-left: 5px;
-  max-width: 100%;
+  border: none;
   text-align: left;
   color: white;
   font-family: "Roboto", "Noto", sans-serif;
@@ -296,8 +302,12 @@ input {
   outline: 0;
   -webkit-appearance: none;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
+/* Removing especially Mozilla autofill styling etc */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -311,15 +321,24 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-button {
+#form-search > #div-input-search {
+  grid-area: r;
+}
+
+#form-search > #div-input-search > button {
   box-shadow: none;
-  border: 1px solid #3b203b;
+  border: none;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
   background-color: #3b203b;
   color: white;
-  padding: 5px;
-  padding-top: 6px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
+  height: 100%;
   cursor: pointer;
+}
+
+#form-search > #div-input-search > button:active {
+  background-color: #351735;
 }
 </style>
