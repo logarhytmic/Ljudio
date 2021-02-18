@@ -53,6 +53,8 @@ module.exports = (app, db) => {
     })
 
     app.post('/api/playlists', async (request, response) => {
+        console.log(request);
+
         let user;
         if (request.session.user) {
             user = await db.query(
@@ -60,6 +62,9 @@ module.exports = (app, db) => {
                 [request.session.user.email, request.session.user.password]
             );
             user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'INSERT INTO playlist SET ?', [request.title, request.session.user.id]
             );
@@ -72,11 +77,16 @@ module.exports = (app, db) => {
     })
 
     app.get('/api/playlists', async (request, response) => {
+        let user;
         if (request.session.user) {
-            let user = await db.query(
+            user = await db.query(
                 'SELECT * FROM users WHERE email = ? AND password = ?',
                 [request.session.user.email, request.session.user.password]
             );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'SELECT * FROM playlist WHERE userid = ?', request.session.user.id
             );
@@ -89,7 +99,16 @@ module.exports = (app, db) => {
     })
 
     app.delete('/api/playlists/:id', async (request, response) => {
+        let user;
         if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+        }
+
+        if (user && user.email) {
             let result = await db.query(
                 'DELETE * FROM playlist WHERE id = ?',
                 [request.params.id]
@@ -147,7 +166,7 @@ module.exports = (app, db) => {
         }
     })
 
-    app.delete('/api/current-playlist/:id', async (request, response) =>{
+    app.delete('/api/current-playlist/:id', async (request, response) => {
         if (request.session.user) {
             let result = await db.query(
                 'DELETE * FROM song WHERE id = ?',
@@ -225,5 +244,5 @@ module.exports = (app, db) => {
     app.all('/api/*', async (req, res) => {
         res.status(404)
         res.end()
-      })
+    })
 }
