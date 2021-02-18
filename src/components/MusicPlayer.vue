@@ -1,8 +1,4 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  />
   <div class="mPlayer">
     <div id="mPlayer-header">
       <span id="span-now-playing">Now playing: </span>
@@ -194,7 +190,7 @@ export default {
     playSong(song) {
       this.player.loadVideoById(song.ytid);
       this.value = 0;
-      this.max = song.duration / 1000;
+      this.max = parseInt((song.duration / 1000).toFixed(0));
       this.fullname = song.originator + " - " + song.title;
     },
     onDragEnd(event) {
