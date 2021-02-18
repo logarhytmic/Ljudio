@@ -1,5 +1,5 @@
 <template>
- <link
+  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
@@ -7,9 +7,9 @@
     <div id="playlist-results">
       <div class="div-header">
         <h3>My Playlists</h3>
-          <button id="button-add">
-        <em class="fa fa-plus"></em>
-      </button>
+        <span id="span-add-to-playlist">
+          <em @click="addPlaylist" id="button-playlist-add" class="fa fa-plus"></em>
+        </span>
       </div>
       <div
         class="playlist-card"
@@ -62,7 +62,32 @@ export default {
       });
 
       this.$store.commit("addCurrentPlaylist", await res.json());
-      console.log(this.$store.state.songs);
+    },
+
+    async addPlaylist() {
+      let data = {
+        title: prompt("Playlist name: ", "").trim(),
+      };
+
+      if (data && data.title) {
+        await fetch("/api/playlists", {
+          method: "POST",
+          body: JSON.stringify(data),
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.affectedRows > 0) {
+              this.fetch_playlists();
+            }
+          })
+          .catch((e) => {
+            console.error("Error:", e);
+          });
+      }
     },
   },
 };
@@ -77,6 +102,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -94,18 +120,18 @@ export default {
 }
 
 #playlist-results > div:first-child {
-    background-color: #351735;
-}
-
-#playlist-results > div:nth-child(2n+2):active {
-  background-color: #231123;
-}
-
-#playlist-results > div:nth-child(2n+3) {
   background-color: #351735;
 }
 
-#playlist-results > div:nth-child(2n+3):active {
+#playlist-results > div:nth-child(2n + 2):active {
+  background-color: #231123;
+}
+
+#playlist-results > div:nth-child(2n + 3) {
+  background-color: #351735;
+}
+
+#playlist-results > div:nth-child(2n + 3):active {
   background-color: #231123;
 }
 
@@ -125,5 +151,27 @@ export default {
 
 .playlist-card > span:hover {
   color: coral;
+}
+
+#span-add-to-playlist {
+  padding-right: 10px;
+  padding-top: 3px;
+}
+
+h3 {
+  width: 100%;
+}
+
+#button-playlist-add {
+  color: green;
+  cursor: pointer;
+}
+
+#button-playlist-add:hover {
+  color: coral;
+}
+
+#button-playlist-add:active {
+  color: green;
 }
 </style>
