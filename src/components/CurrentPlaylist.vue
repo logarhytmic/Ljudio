@@ -6,7 +6,7 @@
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
-        <h3 @click="share_songs(1)">Current Queue</h3>
+        <h3 @click="share_songs()">Current Queue</h3>
       </div>
       <div
         v-for="song in get_songs"
@@ -68,7 +68,7 @@ export default {
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
-    async share_songs(id) {
+    async share_songs() {
       let pl = prompt("Please input playlist id");
       const res = await fetch("/api/current-playlist/" + pl, {
         method: "GET",
