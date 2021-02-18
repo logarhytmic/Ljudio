@@ -28,6 +28,7 @@ html, body {
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+  background-color: #221122;
 }
 
 #app {
