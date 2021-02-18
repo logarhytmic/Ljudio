@@ -26,6 +26,7 @@ export default {
   grid-template-columns: auto;
   grid-template-rows: auto;
   width: 100%;
+  height: 100%;
   margin-left: none;
   background: #231123;
 }
