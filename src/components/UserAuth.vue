@@ -1,14 +1,16 @@
 <template>
   <div id="container-auth">
-    <span v-if="!ifLoggedIn" class="components-auth">
-      <LoginModal />
-    </span>
-    <span v-if="ifLoggedIn" class="components-auth">
-      <Logout />
-    </span>
-    <span v-if="!ifLoggedIn" class="components-auth">
-      <RegisterModal />
-    </span>
+    <div id="buttons">
+      <span v-if="!ifLoggedIn" class="components-auth">
+        <LoginModal />
+      </span>
+      <span v-if="ifLoggedIn" class="components-auth">
+        <Logout />
+      </span>
+      <span v-if="!ifLoggedIn" class="components-auth">
+        <RegisterModal />
+      </span>
+    </div>
   </div>
 </template>
 
@@ -16,8 +18,7 @@
 import LoginModal from "./Login.vue";
 import RegisterModal from "./Register.vue";
 import Logout from "./Logout.vue";
-import {mapGetters} from 'vuex';
-
+import { mapGetters } from "vuex";
 
 export default {
   name: "UserAuth",
@@ -29,11 +30,11 @@ export default {
   data() {
     return {};
   },
-  computed:{
-    ifLoggedIn(){
+  computed: {
+    ifLoggedIn() {
       return this.$store.state.loggedIn;
     },
-    ...mapGetters(['isLoggedIn']),
+    ...mapGetters(["isLoggedIn"]),
   },
   methods: {
     Logout() {
@@ -67,13 +68,14 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 #container-auth {
-  display: flex;
-  justify-content: flex-end;
-  /* margin: 10px; */
+  display: inline-flex;
+}
+
+#buttons {
+  justify-self: flex-end;
 }
 
 .components-auth {
   display: flex;
-  padding: 0;
 }
 </style>

@@ -3,9 +3,11 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
-  <h3>{{ fullname }}</h3>
   <div class="mPlayer">
-    
+    <div id="mPlayer-header">
+      <span id="span-now-playing">Now playing: </span>
+      <span id="span-song-fullname">{{ fullname }}</span>
+    </div>
     <div id="show-player">
       <div id="yt-player"></div>
     </div>
@@ -51,7 +53,6 @@
           @click="onVideoToggle"
           >tv</em
         >
-        <br />
       </div>
       <div class="volume">
         <em id="vol" class="material-icons" title="Toggle mute" @click="onMuteToggle"
@@ -98,9 +99,6 @@ export default {
       fullname: "",
       showVideo: 0,
     };
-  },
-  components: {
-    VueSlider,
   },
   methods: {
     onVideoToggle(event) {
@@ -212,8 +210,8 @@ export default {
         autoplay: 0,
         controls: 0,
       },
-      height: "300",
-      width: "400",
+      height: "400",
+      width: "600",
       events: {
         onReady: this.onPlayerReady,
         onStateChange: this.onPlayerStateChange,
@@ -239,18 +237,30 @@ export default {
 
 <style scoped>
 .mPlayer {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 400px;
-  grid-template-areas:
-    "v"
-    "b";
-  padding-top: 47px;
-  justify-content: center;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  height: 100%;
 }
 
-.mPlayer > h3 {
+.mPlayer > img:active {
+  transform: scale(0.9);
+}
+
+#mPlayer-header {
+  display: flex;
+  justify-content: space-between;
   color: white;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  margin-bottom: 8px;
+  background-color: #351735;
+}
+
+.show-player {
+  margin-top: 20px;
 }
 
 #v-slider {
@@ -261,15 +271,15 @@ export default {
 }
 
 .yt-player {
-  grid-area: v;
 }
 
 .bar {
-  grid-area: b;
-  width: 80%;
-  margin: 0 auto;
-  border: 1px solid #231123;
+  width: 100%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
   box-shadow: 5px 5px 5px black;
+  background-color: #351735;
 }
 
 .controls {
@@ -291,6 +301,17 @@ export default {
 
 #toggle-video {
   color: red;
+}
+
+#span-now-playing {
+  padding-left: 10px;
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+#span-song-fullname {
+  padding-right: 10px;
+  font-size: 18px;
 }
 
 .volume {

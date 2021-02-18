@@ -1,73 +1,133 @@
 <template>
- <link
+  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
-    <div id="current-playlist">
-        <p>Current Playlist</p>
-         <div> <button id="button-add">
-        <em class="fa fa-plus"></em>
-      </button> </div>
+  <div id="current-playlist">
+    <div id="current-playlist-results">
+      <div class="div-header">
+        <h3>Current Queue</h3>
+      </div>
+      <div
+        v-for="song in get_songs"
+        :key="song.id"
+        @click="on_click(song)"
+        class="song-card"
+      >
         <span
-            v-for="song in get_songs"
-            :key="song.id"
-            class="song-item">
-                <div @click="on_click(song)">{{ song.title }}</div>
-        </span>
+          >{{ song.originator }} - {{ song.title }} [{{
+            formatDuration(song.duration)
+          }}]</span
+        >
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            _data: {
-                id: "",
-                title: "",
-                originator: "",
-                duration: 0,
-            },
-        };
+  data() {
+    return {
+      _data: {
+        id: "",
+        title: "",
+        originator: "",
+        duration: "",
+      },
+    };
+  },
+  computed: {
+    get_songs() {
+      return this.$store.state.songs;
     },
-    computed: {
-        get_songs() {
-            return this.$store.state.songs;
-        }
+  },
+  methods: {
+    async on_click(element) {
+      // TODO when current song ends, set next one in songs[] to current
+      // TODO how to make page react to slider reaching maximum
+      // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
+      //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
+      // }
+      this.$store.commit("addSongToQueue", element);
+      this.$store.commit("setCurrentSong", element);
     },
-    methods: {
-        async on_click(element) {
-            // TODO when current song ends, set next one in songs[] to current
-            // TODO how to make page react to slider reaching maximum
-            // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
-            //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
-            // }
-            this.$store.commit("addSongToQueue", element);
-            this.$store.commit("setCurrentSong", element);
-        },
-    }
+    formatDuration(sec) {
+      let s = sec.toFixed(0);
+      let m = Math.floor(s / 60);
+      let h = "";
+
+      if (m > 59) {
+        h = Math.floor(m / 60);
+        h = h >= 10 ? h : "0" + h;
+        m = m - h * 60;
+        m = m >= 10 ? m : "0" + m;
+      }
+
+      s = Math.floor(s % 60);
+      s = s >= 10 ? s : "0" + s;
+
+      return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 #current-playlist {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-}
-
-p {
-  color:white;
-}
-
-button {
-  border: 1px solid #3b203b;
-  background-color: #3b203b;
+  display: flex;
+  flex-flow: column;
   color: white;
-  padding: 5px;
-  padding-top: 6px;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+#current-playlist-results {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  color: white;
+  text-align: left;
+  height: 100%;
+}
+
+.div-header {
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid black;
+}
+
+#current-playlist-results > div:first-child {
+  background-color: #351735;
+}
+
+#current-playlist-results > div:nth-child(2n + 2):active {
+  background-color: #231123;
+}
+
+#current-playlist-results > div:nth-child(2n + 3) {
+  background-color: #351735;
+}
+
+#current-playlist-results > div:nth-child(2n + 3):active {
+  background-color: #231123;
+}
+
+.song-card {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   cursor: pointer;
+  border-bottom: 1px solid black;
+}
+
+.song-card > span:hover {
+  color: coral;
+}
+
+.song-card > span:hover {
+  color: coral;
 }
 </style>
