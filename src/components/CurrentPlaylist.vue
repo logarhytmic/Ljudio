@@ -1,44 +1,115 @@
 <template>
-    <div id="current-playlist">
-        <p>current playlist</p>
+  <div id="current-playlist">
+    <div id="current-playlist-results">
+      <div class="div-header">
+        <h3>Current Queue</h3>
+      </div>
+      <div v-for="song in get_songs" :key="song.id" class="song-card">
         <span
-            v-for="song in get_songs"
-            :key="song.id"
-            class="song-item">
-                <p>{{ song.title }}</p>
-        </span>
+          >{{ song.originator }} - {{ song.title }} [{{
+            formatDuration(song.duration)
+          }}]</span
+        >
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            _data: {
-                id: "",
-                title: "",
-                originator: "",
-                duration: "",
-            },
-        };
+  data() {
+    return {
+      _data: {
+        id: "",
+        title: "",
+        originator: "",
+        duration: "",
+      },
+    };
+  },
+  computed: {
+    get_songs() {
+      return this.$store.state.songs;
     },
-    // mounted() {
-    //     this.fetch_songs("/api/current-playlist/1");
-    // },
-    computed: {
-        get_songs() {
-            return this.$store.state.songs;
-        }
+  },
+  methods: {
+    formatDuration(sec) {
+      let s = sec.toFixed(0);
+      let m = Math.floor(s / 60);
+      let h = "";
+
+      if (m > 59) {
+        h = Math.floor(m / 60);
+        h = h >= 10 ? h : "0" + h;
+        m = m - h * 60;
+        m = m >= 10 ? m : "0" + m;
+      }
+
+      s = Math.floor(s % 60);
+      s = s >= 10 ? s : "0" + s;
+
+      return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
-    methods: {
-        
-    }
+  },
 };
 </script>
 
 <style scoped>
-    .current-playlist {
-        display: flex;
-        flex-flow: column row;
-    }
+#current-playlist {
+  display: flex;
+  flex-flow: column;
+  color: white;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+#current-playlist-results {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  color: white;
+  text-align: left;
+  height: 100%;
+}
+
+.div-header {
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid black;
+}
+
+#current-playlist-results > div:first-child {
+    background-color: #351735;
+}
+
+#current-playlist-results > div:nth-child(2n+2):active {
+  background-color: #231123;
+}
+
+#current-playlist-results > div:nth-child(2n+3) {
+  background-color: #351735;
+}
+
+#current-playlist-results > div:nth-child(2n+3):active {
+  background-color: #231123;
+}
+
+.song-card {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  cursor: pointer;
+  border-bottom: 1px solid black;
+}
+
+.song-card > span:hover {
+  color: coral;
+}
+
+.song-card > span:hover {
+  color: coral;
+}
 </style>
