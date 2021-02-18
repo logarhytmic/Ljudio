@@ -261,7 +261,6 @@ export default {
 }
 
 .yt-player {
-  width: 100%;
   grid-area: v;
 }
 
@@ -299,10 +298,12 @@ export default {
   display: flex;
   justify-content: center;
   color: white;
+  padding: 0px 20px 10px 0px;
 }
 
 .volume > em {
   margin-right: 10px;
+  margin-left: 10px;
   cursor: pointer;
 }
 
@@ -313,6 +314,7 @@ export default {
 .volume > em:active {
   color: white;
 }
+
 
 #vol
 {
