@@ -3,7 +3,6 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
-  <h3>{{ fullname }}</h3>
   <div class="mPlayer">
     <div id="mPlayer-header">
       <span id="span-now-playing">Now playing: </span>
