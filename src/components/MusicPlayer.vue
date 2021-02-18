@@ -3,7 +3,7 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
-
+  <h3>{{ fullname }}</h3>
   <div class="mPlayer">
     <div id="mPlayer-header">
       <span id="span-now-playing">Now playing: </span>
@@ -55,6 +55,18 @@
           >tv</em
         >
       </div>
+      <div class="volume">
+        <em id="vol" class="material-icons" title="Toggle mute" @click="onMuteToggle"
+          >volume_up</em
+        >
+        <vue-slider
+          ref="volume_slider"
+          v-model="volume"
+          v-bind="volume_options"
+          @change="setVolume(volume)"
+          tooltip-placement="bottom"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -71,6 +83,15 @@ export default {
   data() {
     return {
       player: null,
+      volume: 50,
+      volume_options: {
+        dotSize: 12,
+        width: 350,
+        height: 4,
+        contained: false,
+        direction: "ltr",
+        "drag-on-click": false,
+      },
       value: 0,
       max: 1000,
       durationFormatter: (e) => this.formatDuration(e * 1000),
@@ -80,7 +101,6 @@ export default {
       showVideo: 0,
     };
   },
-
   methods: {
     onVideoToggle(event) {
       if (this.showVideo === 1) {
@@ -103,6 +123,15 @@ export default {
       } else {
         playerDiv.style.visibility = "hidden";
         toggleEm.title = "Show the video player";
+      }
+    },
+    onMuteToggle(event) {
+      if (this.player.isMuted()) {
+        this.player.unMute();
+        event.target.style.color = "white";
+      } else {
+        this.player.mute();
+        event.target.style.color = "dimgray";
       }
     },
     formatDuration(ms) {
@@ -133,6 +162,9 @@ export default {
     },
     previousVideo() {
       this.player.previousVideo();
+    },
+    setVolume() {
+      this.player.setVolume(this.$refs.volume_slider.getValue());
     },
     onPlayerReady(event) {},
     onPlayerStateChange(event) {
@@ -173,7 +205,7 @@ export default {
 
   async mounted() {
     this.player = new YT.Player("yt-player", {
-      videoId: "",
+      videoId: "2g_mv8DJ0X4",
       host: "https://www.youtube.com",
       playerVars: {
         autoplay: 0,
@@ -281,5 +313,33 @@ export default {
 #span-song-fullname {
   padding-right: 10px;
   font-size: 18px;
+}
+
+.volume {
+  grid-area: x;
+  display: flex;
+  justify-content: center;
+  color: white;
+  padding: 0px 20px 10px 0px;
+}
+
+.volume > em {
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.volume > em:hover {
+  color: coral;
+}
+
+.volume > em:active {
+  color: white;
+}
+
+
+#vol
+{
+  font-size: 16px;
 }
 </style>

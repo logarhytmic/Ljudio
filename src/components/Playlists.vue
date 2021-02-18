@@ -1,8 +1,15 @@
 <template>
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
   <div id="playlists">
     <div id="playlist-results">
       <div class="div-header">
         <h3>My Playlists</h3>
+          <button id="button-add">
+        <em class="fa fa-plus"></em>
+      </button>
       </div>
       <div
         class="playlist-card"
@@ -53,6 +60,7 @@ export default {
           "Content-Type": "application/json",
         },
       });
+
       this.$store.commit("addCurrentPlaylist", await res.json());
       console.log(this.$store.state.songs);
     },

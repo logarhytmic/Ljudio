@@ -1,17 +1,20 @@
 <template>
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
       </div>
-      <div v-for="song in get_songs" :key="song.id" class="song-card">
+      <div v-for="song in get_songs" :key="song.id" @click="on_click(song)" class="song-card">
         <span
           >{{ song.originator }} - {{ song.title }} [{{
             formatDuration(song.duration)
           }}]</span
         >
       </div>
-    </div>
   </div>
 </template>
 
@@ -33,6 +36,15 @@ export default {
     },
   },
   methods: {
+    async on_click(element) {
+      // TODO when current song ends, set next one in songs[] to current
+      // TODO how to make page react to slider reaching maximum
+      // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
+        //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
+        // }
+      this.$store.commit("addSongToQueue", element);
+      this.$store.commit("setCurrentSong", element);
+        },
     formatDuration(sec) {
       let s = sec.toFixed(0);
       let m = Math.floor(s / 60);
