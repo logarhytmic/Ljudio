@@ -140,8 +140,9 @@ export default {
 
 .song-card {
   display: flex;
+  justify-content: space-between;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
   cursor: pointer;

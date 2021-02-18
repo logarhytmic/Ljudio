@@ -270,9 +270,6 @@ export default {
   margin-left: 10px;
 }
 
-.yt-player {
-}
-
 .bar {
   width: 100%;
   border-top: 1px solid black;
