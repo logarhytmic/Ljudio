@@ -7,9 +7,9 @@
     <div id="playlist-results">
       <div class="div-header">
         <h3>My Playlists</h3>
-        <button id="button-add">
-          <em class="fa fa-plus"></em>
-        </button>
+        <span id="span-add-to-playlist">
+          <em @click="addPlaylist" id="button-playlist-add" class="fa fa-plus"></em>
+        </span>
       </div>
       <div
         class="playlist-card"
@@ -82,7 +82,32 @@ export default {
       });
 
       this.$store.commit("addCurrentPlaylist", await res.json());
-      console.log(this.$store.state.songs);
+    },
+
+    async addPlaylist() {
+      let data = {
+        title: prompt("Playlist name: ", "").trim(),
+      };
+
+      if (data && data.title) {
+        await fetch("/api/playlists", {
+          method: "POST",
+          body: JSON.stringify(data),
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.affectedRows > 0) {
+              this.fetch_playlists();
+            }
+          })
+          .catch((e) => {
+            console.error("Error:", e);
+          });
+      }
     },
   },
 };
@@ -97,6 +122,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -150,5 +176,27 @@ export default {
 
 .button-delete > em:hover {
   color: coral;
+}
+
+#span-add-to-playlist {
+  padding-right: 10px;
+  padding-top: 3px;
+}
+
+h3 {
+  width: 100%;
+}
+
+#button-playlist-add {
+  color: green;
+  cursor: pointer;
+}
+
+#button-playlist-add:hover {
+  color: coral;
+}
+
+#button-playlist-add:active {
+  color: green;
 }
 </style>

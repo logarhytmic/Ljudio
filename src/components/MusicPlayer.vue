@@ -87,7 +87,7 @@ export default {
         dotSize: 12,
         width: 350,
         height: 4,
-        contained: false,
+        contained: true,
         direction: "ltr",
         "drag-on-click": false,
       },

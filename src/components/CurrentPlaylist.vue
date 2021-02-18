@@ -56,8 +56,8 @@ export default {
       this.$store.commit("addSongToQueue", element);
       this.$store.commit("setCurrentSong", element);
     },
-    formatDuration(sec) {
-      let s = sec.toFixed(0);
+    formatDuration(ms) {
+      let s = (ms / 1000).toFixed(0);
       let m = Math.floor(s / 60);
       let h = "";
 

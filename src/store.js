@@ -1,11 +1,9 @@
 import { createStore } from "vuex";
 
 const state = {
-
   results: [],
   playlists: [],
   songs: [],
-  queue: [],
   loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
 }
@@ -17,10 +15,6 @@ const getters = {
 const mutations = {
   addResults(state, results) {
     state.results = results;
-  },
-
-  addSongToQueue(state, song) {
-    state.queue.push(song);
   },
 
   setCurrentSong(state, song) {
