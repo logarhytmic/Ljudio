@@ -95,4 +95,51 @@ export default {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
+
+@media all and (max-width: 800px) {
+  #container-main {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "pl pl"
+    "pl pl"
+    "pl pl"
+    "cl cl"
+    "cl cl"
+    "cl cl"
+    "cs cs"
+    "cs cs"
+    "cs cs"
+    "cs cs"
+    "cp cp"
+    "cp cp"
+    "cp cp"
+    "cp cp"
+    "cu cu";
+  background: #160b16;
+}
+}
+
+@media all and (max-width: 1700px) and (min-width: 800px) {
+  #container-main {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "pl pl cl cl"
+    "pl pl cl cl"
+    "pl pl cl cl"
+    "cs cs cs cs"
+    "cs cs cs cs"
+    "cs cs cs cs"
+    "cs cs cs cs"
+    "cp cp cp cp"
+    "cp cp cp cp"
+    "cp cp cp cp"
+    "cp cp cp cp"
+    "cu cu cu cu";
+  background: #160b16;
+}
+}
 </style>
