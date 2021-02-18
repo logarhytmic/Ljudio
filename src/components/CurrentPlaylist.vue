@@ -12,16 +12,21 @@
         </div>
       </div>
       <div
+        class="song-card"
         v-for="song in get_songs"
         :key="song.id"
         @click="on_click(song)"
-        class="song-card"
       >
-        <span
-          >{{ song.originator }} - {{ song.title }} [{{
-            formatDuration(song.duration)
-          }}]</span
-        >
+        <div class="song-body">
+          <span
+            >{{ song.originator }} - {{ song.title }} [{{
+              formatDuration(song.duration)
+            }}]</span
+          >
+        </div>
+        <div class="button-delete" @click="delete_song(song)">
+          <em class="fa fa-times"></em>
+        </div>
       </div>
     </div>
   </div>
@@ -45,13 +50,33 @@ export default {
     },
   },
   methods: {
+    async delete_song(song) {
+      const res = await fetch("/api/playlists/song", {
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(song),
+      });
+      const temp = await fetch(
+        "/api/current-playlist/" + this.$store.state.currentPlaylist.id,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      this.$store.commit("addCurrentPlaylist", await temp.json());
+    },
+
     async on_click(element) {
       // TODO when current song ends, set next one in songs[] to current
       // TODO how to make page react to slider reaching maximum
       // for (let i = this.get_songs().indexOf(element); i < this.get_songs().length; ++ i) {
       //     this.$store.commit("addSongToQueue", this.get_songs().indexOf(i));
       // }
-      this.$store.commit("addSongToQueue", element);
       this.$store.commit("setCurrentSong", element);
     },
     formatDuration(ms) {
@@ -131,19 +156,24 @@ export default {
 
 .song-card {
   display: flex;
+  justify-content: space-between;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
   cursor: pointer;
   border-bottom: 1px solid black;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
   color: coral;
 }
 
-.song-card > span:hover {
+.song-body > span:hover {
+  color: coral;
+}
+
+.button-delete > em:hover {
   color: coral;
 }
 </style>
