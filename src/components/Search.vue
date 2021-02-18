@@ -50,34 +50,90 @@
           </span>
         </div>
         <div class="card-playlist-add">
-          <em @click="addToPlaylist(card)" class="material-icons"
+          <em @click="showAddModal(card)" class="material-icons"
             >playlist_add</em
           >
         </div>
       </div>
     </div>
   </div>
+
+  <vue-final-modal
+    v-model="showModal"
+    classes="modal-container"
+    content-class="modal-content"
+  >
+    <span class="modal__title"></span>
+    <form @submit.prevent="">
+      <div class="modal__content">
+        <label ref="modalLabel" id="modal-p">Choose the playlist to save song to</label>
+        <div class="container-input">
+          <select name="playlists" id="select-playlist">
+            <option v-for="(playlist, i) in getPlaylists" :key="i" :value="JSON.stringify(playlist)">{{ playlist.title }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal__action">
+        <div class="button_base b12_3d_glitch">
+          <div></div>
+          <div @click.prevent="addToPlaylist">Add</div>
+        </div>
+        <div class="button_base b12_3d_glitch">
+          <div></div>
+          <div @click.prevent="showModal = false">Cancel</div>
+        </div>
+      </div>
+    </form>
+  </vue-final-modal>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      showModal: false,
       searchString: "",
+      song: "",
     };
   },
+
   computed: {
     searchCards() {
       return this.$store.state.results;
     },
+
+    getPlaylists() {
+      return this.$store.state.playlists;
+    },
   },
+
   methods: {
-    async addToPlaylist(song) {
-      await this.$store.commit("addSongToQueue", song);
+    showAddModal(song) {
+      this.song = song;
+      this.showModal = true;
     },
 
-    async getQueue() {
-      console.table(await this.$store.state.queue);
+    async addToPlaylist() {
+      let e = document.getElementById("select-playlist");
+      let playlist = e.options[e.selectedIndex].value;
+
+      await fetch("/api/playlists/song", {
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify([playlist, JSON.stringify(this.song)]),
+      })
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.affectedRows > 0) {
+            this.showModal = false;
+          }
+        })
+        .catch((e) => {
+          console.error("Error:", e);
+        });
     },
 
     formatDuration(ms) {
@@ -210,6 +266,10 @@ export default {
 </script>
 
 <style scoped>
+label {
+  color: white;
+}
+
 #search {
   width: 100%;
   height: 100%;
@@ -217,9 +277,6 @@ export default {
 
 #search-result {
   border: 1px solid black;
-  /* border-bottom: 1px solid black;
-  border-left: 1px solid black;
-  border-right: 1px solid black; */
   color: white;
   text-align: left;
   user-select: none;
@@ -341,4 +398,62 @@ select:-webkit-autofill:focus {
 #form-search > #div-input-search > button:active {
   background-color: #351735;
 }
+
+/* MODAL RELATED CSS */
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
+.container-input {
+  padding-bottom: 15px;
+}
+
+/* ==== Modal CSS ==== */
+
+:deep(.modal-container) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:deep(.modal-content) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid coral;
+  border-radius: 0.25rem;
+  background: #231123;
+}
+
+.modal__title {
+  margin: 0 2rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.modal__content {
+  flex-grow: 1;
+  overflow-y: auto;
+  color: black;
+}
+
+.modal__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  /* padding: 1rem 0 0; */
+}
+
+.modal__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+/* END OF MODAL RELATED CSS */
+
+/* SELECT CSS */
+
+/* SELECT CSS END */
 </style>
