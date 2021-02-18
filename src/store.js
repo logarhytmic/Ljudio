@@ -4,7 +4,7 @@ const state = {
   results: [],
   playlists: [],
   songs: [],
-  //loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
+  loggedIn: false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
   currentPlaylist: {},
 }
