@@ -7,9 +7,9 @@
     <div id="playlist-results">
       <div class="div-header">
         <h3>My Playlists</h3>
-        <div id="div-add-to-playlist">
-          <em @click="addPlaylist" class="fa fa-plus"></em>
-        </div>
+        <span id="span-add-to-playlist">
+          <em @click="addPlaylist" id="button-playlist-add" class="fa fa-plus"></em>
+        </span>
       </div>
       <div
         class="playlist-card"
@@ -72,7 +72,7 @@ export default {
       if (data && data.title) {
         await fetch("/api/playlists", {
           method: "POST",
-          body: data.title,
+          body: JSON.stringify(data),
           cache: "no-cache",
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +80,9 @@ export default {
         })
           .then((r) => r.json())
           .then((d) => {
-            console.log("addPlaylist", d);
+            if (d.affectedRows > 0) {
+              this.fetch_playlists();
+            }
           })
           .catch((e) => {
             console.error("Error:", e);
@@ -151,7 +153,25 @@ export default {
   color: coral;
 }
 
+#span-add-to-playlist {
+  padding-right: 10px;
+  padding-top: 3px;
+}
+
+h3 {
+  width: 100%;
+}
+
 #button-playlist-add {
-  font-size: 12px;
+  color: green;
+  cursor: pointer;
+}
+
+#button-playlist-add:hover {
+  color: coral;
+}
+
+#button-playlist-add:active {
+  color: green;
 }
 </style>
