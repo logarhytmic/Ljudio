@@ -7,6 +7,9 @@
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
+        <div>
+            <em @click="share_songs()" class="material-icons">share</em>
+        </div>
       </div>
       <div
         class="song-card"
@@ -93,6 +96,18 @@ export default {
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
+    async share_songs() {
+      let pl = prompt("Please input playlist id");
+      const res = await fetch("/api/current-playlist/" + pl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      this.$store.commit("addCurrentPlaylist", await res.json());
+      console.log(this.$store.state.songs);
+    },
   },
 };
 </script>
@@ -116,6 +131,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
