@@ -6,6 +6,7 @@ const state = {
   songs: [],
   loggedIn: !!false || JSON.parse(localStorage.getItem("loggedIn")),
   currentSong: {},
+  currentPlaylist: {},
 }
 
 const getters = {
@@ -16,7 +17,6 @@ const mutations = {
   addResults(state, results) {
     state.results = results;
   },
-
   setCurrentSong(state, song) {
     state.currentSong = song;
   },
@@ -26,24 +26,12 @@ const mutations = {
   addCurrentPlaylist(state, songs) {
     state.songs = songs;
   },
-
-  removeSongFromQueue(state, song) {
-    // Mutations are void functions. They can not return anything. TODO: Convert this to an action with promise
-    let index = state.queue.findIndex((e) => Object.toJson(e) == Object.toJson(song));
-
-    if (index != -1) {
-      state.queue = state.queue.splice(index, 1);
-
-      return 1;
-    }
-
-    return 0;
+  setCurrentPlaylist(state, playlist) {
+    state.currentPlaylist = playlist;
   },
-
   checkLoggedIn(state) {
     state.loggedIn = !state.loggedIn;
   },
-
   clearStore(state) {
     state.results = [];
     state.playlists = [];
