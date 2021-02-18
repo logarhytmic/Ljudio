@@ -13,9 +13,9 @@
       </div>
       <div
         class="playlist-card"
-        @click="fetch_songs(playlist.id)"
-        v-bind:key="playlist.id"
         v-for="playlist in get_playlist"
+        v-bind:key="playlist.id"
+        @click="fetch_songs(playlist)"
       >
         <span>{{ playlist.title }}</span>
       </div>
@@ -53,8 +53,9 @@ export default {
       this.$store.commit("addPlaylists", await res.json());
     },
 
-    async fetch_songs(id) {
-      const res = await fetch("/api/current-playlist/" + id, {
+    async fetch_songs(playlist) {
+      await this.$store.commit("setCurrentPlaylist", playlist);
+      const res = await fetch("/api/current-playlist/" + playlist.id, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
