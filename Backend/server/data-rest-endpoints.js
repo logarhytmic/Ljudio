@@ -66,7 +66,8 @@ module.exports = (app, db) => {
 
         if (user && user.email) {
             let result = await db.query(
-                'INSERT INTO playlist SET ?', [request.title, request.session.user.id]
+                'INSERT INTO playlist (title, userid) VALUES (?)',
+                [request.body.title, user.id]
             );
             response.json(result);
         }

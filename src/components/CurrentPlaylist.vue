@@ -6,7 +6,10 @@
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
-        <h3 @click="share_songs()">Current Queue</h3>
+        <h3>Current Queue</h3>
+        <div>
+            <em @click="share_songs()" class="material-icons">share</em>
+        </div>
       </div>
       <div
         v-for="song in get_songs"
@@ -103,6 +106,7 @@ export default {
 }
 
 .div-header {
+  display: flex;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
