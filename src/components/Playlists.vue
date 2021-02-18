@@ -57,7 +57,9 @@ export default {
                     "Content-Type": "application/json"
                 },
             });
-            this.$store.commit("addCurrentPlaylist", await res.json());
+            let test = await res.json();
+            //this.$store.commit("addCurrentPlaylist", await res.json());
+            this.$store.commit("addCurrentPlaylist", test);
             console.log(this.$store.state.songs);
         },
     }
