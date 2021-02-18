@@ -6,7 +6,7 @@
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
-        <h3>Current Queue</h3>
+        <h3 @click="share_songs(1)">Current Queue</h3>
       </div>
       <div
         v-for="song in get_songs"
@@ -67,6 +67,18 @@ export default {
       s = s >= 10 ? s : "0" + s;
 
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
+    },
+    async share_songs(id) {
+      let pl = prompt("Please input playlist id");
+      const res = await fetch("/api/current-playlist/" + pl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      this.$store.commit("addCurrentPlaylist", await res.json());
+      console.log(this.$store.state.songs);
     },
   },
 };
