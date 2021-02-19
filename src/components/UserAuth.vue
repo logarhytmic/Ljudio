@@ -68,11 +68,13 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 #container-auth {
-  display: inline-flex;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #buttons {
-  justify-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .components-auth {

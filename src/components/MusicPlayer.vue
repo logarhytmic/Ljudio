@@ -1,14 +1,10 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  />
   <div class="mPlayer">
     <div id="mPlayer-header">
       <span id="span-now-playing">Now playing: </span>
       <span id="span-song-fullname">{{ fullname }}</span>
     </div>
-    <div id="show-player">
+    <div id="show-player" class="video-container">
       <div id="yt-player"></div>
     </div>
     <div class="bar">
@@ -55,7 +51,11 @@
         >
       </div>
       <div class="volume">
-        <em id="vol" class="material-icons" title="Toggle mute" @click="onMuteToggle"
+        <em
+          id="vol"
+          class="material-icons"
+          title="Toggle mute"
+          @click="onMuteToggle"
           >volume_up</em
         >
         <vue-slider
@@ -97,7 +97,7 @@ export default {
       videoTime: 0,
       intervalUpdater: null,
       fullname: "",
-      showVideo: 0,
+      showVideo: 1,
     };
   },
   methods: {
@@ -194,7 +194,7 @@ export default {
     playSong(song) {
       this.player.loadVideoById(song.ytid);
       this.value = 0;
-      this.max = song.duration / 1000;
+      this.max = parseInt((song.duration / 1000).toFixed(0));
       this.fullname = song.originator + " - " + song.title;
     },
     onDragEnd(event) {
@@ -210,15 +210,15 @@ export default {
         autoplay: 0,
         controls: 0,
       },
-      height: "400",
-      width: "600",
+      // height: "100%",
+      // width: "100%",
       events: {
         onReady: this.onPlayerReady,
         onStateChange: this.onPlayerStateChange,
       },
     });
 
-    document.getElementById("show-player").style.visibility = "hidden";
+    // document.getElementById("show-player").style.visibility = "hidden";
   },
 
   computed: {
@@ -250,17 +250,13 @@ export default {
   display: flex;
   justify-content: space-between;
   color: white;
-  padding-top: 4px;
+  padding-top: 2px;
   padding-bottom: 3px;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
   margin-bottom: 8px;
   background-color: #351735;
-}
-
-.show-player {
-  margin-top: 20px;
 }
 
 #v-slider {
@@ -297,7 +293,7 @@ export default {
 }
 
 #toggle-video {
-  color: red;
+  color: green;
 }
 
 #span-now-playing {
@@ -333,9 +329,7 @@ export default {
   color: white;
 }
 
-
-#vol
-{
+#vol {
   font-size: 16px;
   user-select: none;
 }

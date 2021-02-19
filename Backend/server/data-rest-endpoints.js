@@ -64,7 +64,7 @@ module.exports = (app, db) => {
 
         if (user && user.email) {
             let result = await db.query(
-                'INSERT INTO playlist (title, userid) VALUES (?, ?)', [request.body.title, request.session.user.id]
+                'INSERT INTO playlist (title, userid, extid) VALUES (?, ?, ?)', [request.body.title, request.session.user.id, request.body.ext_id]
             );
             response.json(result);
         }
@@ -177,12 +177,51 @@ module.exports = (app, db) => {
         }
 
         if (user && user.email) {
-            let songs = await db.query(
-                'SELECT DISTINCT s.* FROM song s INNER JOIN playlist_song p ON s.id = p.song_id WHERE p.playlist_id = ?',
-                [request.params.id]
-            );
+                let songs
+                    songs = await db.query(
+                        'SELECT DISTINCT s.* FROM song s INNER JOIN playlist_song p ON s.id = p.song_id WHERE p.playlist_id = ?',
+                        [request.params.id]
+                    );
 
-            response.json(songs);
+                response.json(songs);
+        } else {
+            response.status(401);
+            response.json({ message: "unauthorized" });
+        }
+    })
+
+    app.get('/api/share/:id', async (request, response) => {
+        let user;
+        if (request.session.user) {
+            user = await db.query(
+                'SELECT * FROM users WHERE email = ? AND password = ?',
+                [request.session.user.email, request.session.user.password]
+            );
+            user = user[0];
+        }
+
+        if (user && user.email) {
+            if (request.params.id) {
+                let playlistId = await db.query(
+                    'SELECT * FROM playlist WHERE playlist.extid = ?',
+                    [request.params.id]
+                );
+                playlistId = playlistId[0].id;
+
+                let songs
+                if (playlistId) {
+                    songs = await db.query(
+                        'SELECT DISTINCT s.* FROM song s INNER JOIN playlist_song p ON s.id = p.song_id WHERE p.playlist_id = ?',
+                        [playlistId]
+                    );
+
+                }
+
+                response.json(songs);
+            } else {
+                response.status(404);
+                response.json({ message: "not found" });
+            }
         } else {
             response.status(401);
             response.json({ message: "unauthorized" });
