@@ -65,7 +65,7 @@
   </vue-final-modal>
   <div class="button_base b12_3d_glitch">
     <div></div>
-    <div @click.prevent="showModal = true">Sign up</div>
+    <div @click.prevent="OpenModal()">Sign up</div>
   </div>
 </template>
 
@@ -84,46 +84,70 @@ export default {
     };
   },
   methods: {
+    OpenModal() {
+      this.ClearModalData();
+      this.showModal = true;
+    },
     CloseModal() {
       this.showModal = false;
+      this.ClearModalData();
+    },
+    ClearModalData() {
       this._data.first_name = "";
       this._data.last_name = "";
       this._data.email = "";
       this._data.password = "";
+      this.$refs.modalLabel.innerText = "";
     },
     Register() {
       if (
         this._data.first_name.trim().length > 0 &&
-        this._data.last_name.trim().length > 0 &&
-        this._data.email.trim().length > 0 &&
-        this._data.password.trim().length > 0
+        this._data.last_name.trim().length > 0
       ) {
-        fetch("/api/users", {
-          method: "POST",
-          body: JSON.stringify(this._data),
-          cache: "no-cache",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((r) => r.json())
-          .then((d) => {
-            if (d.affectedRows === 1) {
-              console.log("Success:", d);
-              this.showModal = false;
-              this._data.first_name = "";
-              this._data.last_name = "";
-              this._data.email = "";
-              this._data.password = "";
-            } else {
-              console.log("Unsuccessful:", d);
-              this.$refs.modalLabel.innerText = "Something went wrong! :(";
-              this._data.password = "";
-            }
-          })
-          .catch((e) => {
-            console.error("Error:", e);
-          });
+        if (this._data.password.trim().length > 4) {
+          if (
+            /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(
+              this._data.email.trim()
+            )
+          ) {
+            fetch("/api/users", {
+              method: "POST",
+              body: JSON.stringify(this._data),
+              cache: "no-cache",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((r) => r.json())
+              .then((d) => {
+                if (d.affectedRows === 1) {
+                  console.log("Success:", d);
+                  this.showModal = false;
+                  this._data.first_name = "";
+                  this._data.last_name = "";
+                  this._data.email = "";
+                  this._data.password = "";
+                } else {
+                  console.log("Unsuccessful:", d);
+                  this.$refs.modalLabel.innerText = "Something went wrong! :(";
+                  this._data.password = "";
+                }
+              })
+              .catch((e) => {
+                console.error("Error:", e);
+              });
+          } else {
+            this.$refs.modalLabel.innerText = "Not a valid email!";
+            this._data.password = "";
+          }
+        } else {
+          this.$refs.modalLabel.innerText =
+            "Password has to be more than 4 characters!";
+          this._data.password = "";
+        }
+      } else {
+        this.$refs.modalLabel.innerText = "Non valid length on names!";
+        this._data.password = "";
       }
     },
   },
@@ -144,7 +168,7 @@ label {
 /* ==== Validation CSS ==== */
 
 input:required {
-  box-shadow:none;
+  box-shadow: none;
 }
 
 /* ==== Modal CSS ==== */

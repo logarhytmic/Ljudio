@@ -62,6 +62,11 @@ export default {
     };
   },
   methods: {
+    OpenModal() {
+      this._data.email = "";
+      this._data.password = "";
+      this.showModal = true;
+    },
     CloseModal() {
       this.showModal = false;
       this._data.email = "";
