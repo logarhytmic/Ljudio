@@ -127,9 +127,10 @@ export default {
   height: 100%;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "pl pl cl cl"
-    "pl pl cl cl"
-    "pl pl cl cl"
+    "pl pl pl pl"
+    "pl pl pl pl"
+    "cl cl cl cl"
+    "cl cl cl cl"
     "cs cs cs cs"
     "cs cs cs cs"
     "cs cs cs cs"

@@ -24,7 +24,8 @@ export default {
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;

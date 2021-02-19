@@ -1,23 +1,20 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  />
   <div id="current-playlist">
     <div id="current-playlist-results">
       <div class="div-header">
         <h3>Current Queue</h3>
         <div>
-            <em @click="share_songs()" class="material-icons">share</em>
+          <em
+            @click="share_songs()"
+            id="em-share"
+            class="material-icons"
+            title="Share"
+            >share</em
+          >
         </div>
       </div>
-      <div
-        class="song-card"
-        v-for="song in get_songs"
-        :key="song.id"
-        @click="on_click(song)"
-      >
-        <div class="song-body">
+      <div class="song-card" v-for="song in get_songs" :key="song.id">
+        <div class="song-body" @click="on_click(song)">
           <span
             >{{ song.originator }} - {{ song.title }} [{{
               formatDuration(song.duration)
@@ -41,6 +38,7 @@ export default {
         title: "",
         originator: "",
         duration: "",
+        ytid: "",
       },
     };
   },
@@ -59,6 +57,7 @@ export default {
         },
         body: JSON.stringify(song),
       });
+
       const temp = await fetch(
         "/api/current-playlist/" + this.$store.state.currentPlaylist.id,
         {
@@ -97,16 +96,18 @@ export default {
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
     async share_songs() {
-      let pl = prompt("Please input playlist id");
-      const res = await fetch("/api/current-playlist/" + pl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      let pl = prompt("Please input the playlists code");
 
-      this.$store.commit("addCurrentPlaylist", await res.json());
-      console.log(this.$store.state.songs);
+      if (pl && pl.trim()) {
+        const res = await fetch("/api/share/" + pl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        this.$store.commit("addCurrentPlaylist", await res.json());
+      }
     },
   },
 };
@@ -132,6 +133,7 @@ export default {
 
 .div-header {
   display: flex;
+  justify-content: space-between;
   padding-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -174,6 +176,16 @@ export default {
 }
 
 .button-delete > em:hover {
+  color: coral;
+}
+
+#em-share {
+  cursor: pointer;
+  user-select: none;
+  padding-right: 5px;
+}
+
+#em-share:hover {
   color: coral;
 }
 </style>
