@@ -121,7 +121,7 @@ export default {
 }
 }
 
-@media all and (max-width: 1700px) and (min-width: 800px) {
+@media all and (max-width: 1100px) and (min-width: 800px) {
   #container-main {
   display: grid;
   height: 100%;
