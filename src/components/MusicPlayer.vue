@@ -97,7 +97,7 @@ export default {
       videoTime: 0,
       intervalUpdater: null,
       fullname: "",
-      showVideo: 0,
+      showVideo: 1,
     };
   },
   methods: {
@@ -218,7 +218,7 @@ export default {
       },
     });
 
-    document.getElementById("show-player").style.visibility = "hidden";
+    // document.getElementById("show-player").style.visibility = "hidden";
   },
 
   computed: {
@@ -293,7 +293,7 @@ export default {
 }
 
 #toggle-video {
-  color: red;
+  color: green;
 }
 
 #span-now-playing {
