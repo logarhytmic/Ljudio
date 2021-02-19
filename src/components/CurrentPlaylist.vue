@@ -4,14 +4,16 @@
       <div class="div-header">
         <h3>Current Queue</h3>
         <div>
-            <em @click="share_songs()" id="em-share" class="material-icons" title="Share">share</em>
+          <em
+            @click="share_songs()"
+            id="em-share"
+            class="material-icons"
+            title="Share"
+            >share</em
+          >
         </div>
       </div>
-      <div
-        class="song-card"
-        v-for="song in get_songs"
-        :key="song.id"
-      >
+      <div class="song-card" v-for="song in get_songs" :key="song.id">
         <div class="song-body" @click="on_click(song)">
           <span
             >{{ song.originator }} - {{ song.title }} [{{
@@ -36,6 +38,7 @@ export default {
         title: "",
         originator: "",
         duration: "",
+        ytid: "",
       },
     };
   },
@@ -54,6 +57,7 @@ export default {
         },
         body: JSON.stringify(song),
       });
+
       const temp = await fetch(
         "/api/current-playlist/" + this.$store.state.currentPlaylist.id,
         {
@@ -92,16 +96,18 @@ export default {
       return h != "" ? h + ":" + m + ":" + s : m + ":" + s;
     },
     async share_songs() {
-      let pl = prompt("Please input playlist id");
-      const res = await fetch("/api/current-playlist/" + pl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      let pl = prompt("Please input the playlists code");
 
-      this.$store.commit("addCurrentPlaylist", await res.json());
-      console.log(this.$store.state.songs);
+      if (pl && pl.trim()) {
+        const res = await fetch("/api/share/" + pl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        this.$store.commit("addCurrentPlaylist", await res.json());
+      }
     },
   },
 };
