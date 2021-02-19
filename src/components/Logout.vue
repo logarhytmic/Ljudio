@@ -1,48 +1,36 @@
 <template>
-  <router-view />
+  <div class="button_base b12_3d_glitch">
+    <div></div>
+    <div @click.prevent="Logout()">Logout</div>
+  </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-
 export default {
-  name: "App",
-  components: {
-    Header,
-    Footer,
+  name: "Logout",
+  methods: {
+    Logout() {
+      fetch("/api/login", {
+        method: "DELETE",
+      })
+        .then((r) => r.json())
+        .then((d) => {
+          //
+        })
+        .catch((e) => {
+          console.error("Error:", e);
+        });
+
+      localStorage.setItem("loggedIn", "false");
+      this.$store.commit("checkLoggedIn");
+      this.$store.commit("clearStore");
+      this.$router.push("/");
+    },
   },
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4;
-  background-color: #221122;
-}
-
-#app {
-  height: 100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-/* ==== Button CSS ==== */
-
+<style scoped>
 .preserve-3d {
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
@@ -53,10 +41,10 @@ body {
   border: 0;
   font-size: 18px;
   position: relative;
-  /* top: 50%;
-  left: 50%;
-  margin-top: -25px;
-  margin-left: -100px; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* margin-top: -25px; */
+  /* margin-left: -100px; */
   width: 80px;
   height: 30px;
   text-align: center;
