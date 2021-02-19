@@ -21,26 +21,11 @@
         :tooltip-formatter="durationFormatter"
       ></vue-slider>
       <div class="controls">
-        <em
-          class="material-icons"
-          title="Skip to previous video"
-          @click="previousVideo"
-          >skip_previous</em
-        >
         <em class="material-icons" title="Play video" @click="playVideo"
           >play_arrow</em
         >
         <em class="material-icons" title="Pause video" @click="pauseVideo"
           >pause</em
-        >
-        <em class="material-icons" title="Skip to next video" @click="nextVideo"
-          >skip_next</em
-        >
-        <em
-          class="material-icons"
-          title="Add current song to a playlist"
-          @click="addToPlaylist"
-          >playlist_add</em
         >
         <em
           class="material-icons"
