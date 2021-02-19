@@ -360,10 +360,13 @@ label {
 
 #div-input {
   display: flex;
+  border-bottom-width: 0px;
+  padding-bottom: 0px;
   padding-left: 5px;
   padding-right: 3px;
   justify-content: space-between;
   border-bottom: 1px solid black;
+
   cursor: pointer;
 }
 
@@ -389,8 +392,8 @@ label {
   -webkit-appearance: none;
   -webkit-font-smoothing: antialiased;
   height: 100%;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 0px;
+  padding-bottom: 12px;
 }
 
 /* Removing especially Mozilla autofill styling etc */
@@ -432,7 +435,7 @@ select:-webkit-autofill:focus {
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 .container-input {
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 
 /* ==== Modal CSS ==== */
